@@ -1,0 +1,97 @@
+/* Book-specific styles for cognitive-design-guide widgets & diagrams */
+
+.sim-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+  gap: 0.55rem;
+  margin: 0.75rem 0;
+}
+
+.sim-toggle-btn {
+  text-align: left;
+  justify-content: flex-start;
+  background: var(--bg-card);
+  color: var(--ink-primary);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.sim-toggle-btn[aria-pressed="true"] {
+  background: var(--ok-bg);
+  border-color: var(--ok-color);
+  color: var(--ink-primary);
+  box-shadow: inset 0 0 0 1px var(--ok-color);
+}
+
+.sim-slider-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 0.55rem 0.8rem;
+}
+
+.sim-verdict {
+  margin-top: 0.7rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.sim-verdict.is-overload {
+  background: var(--err-bg);
+  color: var(--err-color);
+  border: 1.5px solid var(--err-color);
+}
+
+.sim-verdict.is-tight {
+  background: var(--highlight-bg);
+  color: var(--highlight-color);
+  border: 1.5px solid var(--highlight-color);
+}
+
+.sim-verdict.is-optimal {
+  background: var(--ok-bg);
+  color: var(--ok-color);
+  border: 1.5px solid var(--ok-color);
+}
+
+.makeover-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.makeover-preview {
+  background: var(--bg-card);
+  border: 2px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 1rem 1.15rem;
+}
+
+.makeover-preview.is-bad {
+  border-top: 5px solid var(--err-color);
+}
+
+.makeover-preview.is-good {
+  border-top: 5px solid var(--ok-color);
+}
+
+.makeover-annotation-list {
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  background: var(--highlight-bg);
+  border: 1px dashed var(--highlight-color);
+  font-size: 0.86rem;
+}

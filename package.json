@@ -1,0 +1,23 @@
+{
+  "name": "teaching-book-studio",
+  "version": "1.0.0",
+  "description": "易懂教學教材與展示簡報工作坊 — Zero-dependency offline-first dual-mode interactive textbook and Assertion-Evidence presentation studio",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "new-book": "node scripts/new-book.mjs",
+    "audit-books": "node scripts/audit-books.mjs"
+  },
+  "keywords": [
+    "education",
+    "interactive-textbook",
+    "presentation",
+    "assertion-evidence",
+    "multimedia-learning",
+    "zero-dependency",
+    "offline-first"
+  ],
+  "license": "MIT"
+}

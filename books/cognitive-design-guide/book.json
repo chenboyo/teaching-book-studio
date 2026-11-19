@@ -1,0 +1,20 @@
+{
+  "id": "cognitive-design-guide",
+  "title": "讓複雜變簡單：易懂教學教材與簡報設計指南",
+  "entryHtml": "index.html",
+  "contentModule": "./src/data/content.js",
+  "styles": [
+    "../../shared/styles/tokens.css",
+    "../../shared/styles/book-reader.css",
+    "./src/styles/book.css"
+  ],
+  "modules": [
+    { "key": "bookEngine", "path": "../../shared/engine/bookEngine.js" },
+    { "key": "dialogHelper", "path": "../../shared/ui/dialogHelper.js" },
+    { "key": "toolbarHelper", "path": "../../shared/ui/toolbarHelper.js" },
+    { "key": "bookViewer", "path": "../../shared/engine/bookViewer.js" },
+    { "key": "content", "path": "./src/data/content.js" },
+    { "key": "interactiveDemos", "path": "./src/widgets/interactiveDemos.js" },
+    { "key": "main", "path": "./src/main.js", "isEntry": true }
+  ]
+}

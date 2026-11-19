@@ -1,0 +1,461 @@
+:root,
+[data-theme="paper"] {
+  --bg-canvas: #faf6ee;
+  --bg-card: #fffdf9;
+  --bg-subtle: #f2ebe0;
+  --bg-elevated: #ffffff;
+  --ink-primary: #1b2a41;
+  --ink-secondary: #4a5b70;
+  --border-soft: #d6cbb8;
+  --border-strong: #9c8f7a;
+
+  --accent-primary: #1b365d;
+  --accent-bg: #e3eaf5;
+  --accent-ink: #ffffff;
+
+  --highlight-color: #b45309;
+  --highlight-bg: #fef3c7;
+
+  --ok-color: #15803d;
+  --ok-bg: #dcfce7;
+  --err-color: #b91c1c;
+  --err-bg: #fee2e2;
+
+  --focus-ring: #1b365d;
+  --shadow-card: 0 4px 16px rgb(27 42 65 / 0.07);
+  --shadow-stage: 0 12px 32px rgb(27 42 65 / 0.1);
+
+  color-scheme: light;
+}
+
+[data-theme="light"] {
+  --bg-canvas: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-subtle: #f1f5f9;
+  --bg-elevated: #ffffff;
+  --ink-primary: #0f172a;
+  --ink-secondary: #475569;
+  --border-soft: #cbd5e1;
+  --border-strong: #64748b;
+
+  --accent-primary: #1d4ed8;
+  --accent-bg: #dbeafe;
+  --accent-ink: #ffffff;
+
+  --highlight-color: #b45309;
+  --highlight-bg: #fef3c7;
+
+  --ok-color: #15803d;
+  --ok-bg: #dcfce7;
+  --err-color: #b91c1c;
+  --err-bg: #fee2e2;
+
+  --focus-ring: #0f172a;
+  --shadow-card: 0 4px 14px rgb(15 23 42 / 0.06);
+  --shadow-stage: 0 12px 32px rgb(15 23 42 / 0.09);
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg-canvas: #0f172a;
+  --bg-card: #1e293b;
+  --bg-subtle: #273449;
+  --bg-elevated: #273449;
+  --ink-primary: #f1f5f9;
+  --ink-secondary: #cbd5e1;
+  --border-soft: #334155;
+  --border-strong: #64748b;
+
+  --accent-primary: #38bdf8;
+  --accent-bg: #0c4a6e;
+  --accent-ink: #082f49;
+
+  --highlight-color: #fbbf24;
+  --highlight-bg: #451a03;
+
+  --ok-color: #4ade80;
+  --ok-bg: #14532d;
+  --err-color: #fca5a5;
+  --err-bg: #7f1d1d;
+
+  --focus-ring: #7dd3fc;
+  --shadow-card: 0 4px 18px rgb(0 0 0 / 0.35);
+  --shadow-stage: 0 14px 36px rgb(0 0 0 / 0.45);
+
+  color-scheme: dark;
+}
+
+:root {
+  --target-size: 28px;
+  --radius-lg: 16px;
+  --radius-md: 11px;
+  --font-sans: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, -apple-system, sans-serif;
+  --font-display: 'Noto Serif TC', 'PMingLiU', 'Noto Sans TC', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+  --reader-font-scale: 1;
+}
+
+@media (pointer: coarse) {
+  :root {
+    --target-size: 44px;
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+}
+
+body {
+  margin: 0;
+  min-block-size: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow-wrap: break-word;
+  line-height: 1.65;
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+}
+
+h1, h2, h3, h4 {
+  text-wrap: balance;
+  margin-top: 0;
+}
+
+p, li {
+  text-wrap: pretty;
+}
+
+:where(a, code) {
+  overflow-wrap: anywhere;
+}
+
+img, svg {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+/* Component-specific dark code surface with explicit background & color */
+pre,
+code.code-block {
+  color-scheme: dark;
+  background: #0f172a;
+  color: #e2e8f0;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  overflow-x: auto;
+}
+
+code {
+  font-family: var(--font-mono);
+}
+
+/* Visually hidden utility (accessible to screen readers; reveals on focus) */
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1000;
+  background: var(--accent-primary);
+  color: var(--accent-ink);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* Minimum touch/click target sizing & natural interaction feedback */
+:where(button, select, textarea, input:not([type="checkbox"], [type="radio"]), [role="button"], nav a, .back-hub-link, label:has(input[type="checkbox"], input[type="radio"])) {
+  min-block-size: var(--target-size);
+  min-inline-size: var(--target-size);
+}
+
+:where(button) {
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :where(button, .pill-btn, .tool-btn, .play-link) {
+    transition: box-shadow 150ms ease-out, scale 150ms ease-out, background-color 150ms ease-out, border-color 150ms ease-out;
+  }
+}
+
+@media (hover: hover) {
+  button:hover:not(:disabled, [aria-disabled="true"]) {
+    box-shadow: 0 3px 10px rgb(15 23 42 / 0.16);
+  }
+}
+
+button:active:not(:disabled, [aria-disabled="true"]) {
+  scale: 0.97;
+}
+
+button:disabled,
+button[aria-disabled="true"] {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* Shared Header, Main & Footer */
+.app-header {
+  background: var(--bg-card);
+  border-bottom: 2px solid var(--border-soft);
+  padding: 0.75rem max(1rem, env(safe-area-inset-right, 0px)) 0.75rem max(1rem, env(safe-area-inset-left, 0px));
+  padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.brand-cluster {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.brand-icon {
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.brand-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.02rem, 1.55vw, 1.28rem);
+  font-weight: 800;
+  margin: 0;
+  color: var(--ink-primary);
+}
+
+.brand-subtitle {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--ink-secondary);
+}
+
+.nav-pill, .tool-btn, .pill-btn {
+  background: var(--bg-subtle);
+  color: var(--ink-primary);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 0.38rem 0.85rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.32rem;
+  white-space: nowrap;
+}
+
+.nav-pill.is-active,
+.pill-btn.is-active,
+.tool-btn[aria-pressed="true"],
+.pill-btn[aria-pressed="true"] {
+  background: var(--accent-primary);
+  color: var(--accent-ink);
+  border-color: var(--accent-primary);
+  box-shadow: inset 0 0 0 1px var(--accent-ink);
+}
+
+.app-main {
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding: 1rem max(1rem, env(safe-area-inset-right, 0px)) 2rem max(1rem, env(safe-area-inset-left, 0px));
+}
+
+.app-footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ink-secondary);
+  padding: 0.9rem 1rem max(0.9rem, env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--border-soft);
+  background: var(--bg-card);
+}
+
+/* Native <dialog> styling & Top-Layer Animations */
+dialog.lab-dialog {
+  width: min(92vw, 860px);
+  max-height: 86dvh;
+  border: 2px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  background: var(--bg-card);
+  color: var(--ink-primary);
+  box-shadow: 0 24px 48px rgb(15 23 42 / 0.28);
+  opacity: 0;
+  transition-property: opacity, transform, display, overlay;
+  transition-duration: 0.25s;
+  transition-timing-function: ease-out;
+  transition-behavior: allow-discrete;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.lab-dialog {
+    transform: scale(0.94);
+  }
+}
+
+dialog.lab-dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog.lab-dialog::backdrop {
+  background-color: rgba(15, 23, 42, 0);
+  overflow: hidden;
+  overscroll-behavior: contain;
+  transition-property: background-color, display, overlay;
+  transition-duration: 0.25s;
+  transition-timing-function: ease-out;
+  transition-behavior: allow-discrete;
+}
+
+:is(dialog.lab-dialog[open]):where(:not([data-closing])) {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+}
+
+@starting-style {
+  :is(dialog.lab-dialog[open]):where(:not([data-closing])) {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :is(dialog.lab-dialog[open]):where(:not([data-closing])) {
+    transform: scale(1);
+  }
+  @starting-style {
+    :is(dialog.lab-dialog[open]):where(:not([data-closing])) {
+      transform: scale(0.94);
+    }
+  }
+}
+
+:is(dialog.lab-dialog[open]):where(:not([data-closing]))::backdrop {
+  background-color: rgba(15, 23, 42, 0.52);
+}
+
+@starting-style {
+  :is(dialog.lab-dialog[open]):where(:not([data-closing]))::backdrop {
+    background-color: rgba(15, 23, 42, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  dialog.lab-dialog,
+  dialog.lab-dialog::backdrop {
+    transition-duration: 0.1s;
+  }
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1.5px solid var(--border-soft);
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+}
+
+.dialog-close-btn {
+  background: var(--bg-subtle);
+  color: var(--ink-primary);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-weight: 800;
+}
+
+.dialog-body {
+  padding: 1rem 1.25rem;
+  overflow-y: auto;
+}
+
+/* Directional View Transitions for Slide Navigation */
+@keyframes slide-to-left {
+  to { transform: translateX(-100%); }
+}
+
+@keyframes slide-from-right {
+  from { transform: translateX(100%); }
+}
+
+@keyframes slide-to-right {
+  to { transform: translateX(100%); }
+}
+
+@keyframes slide-from-left {
+  from { transform: translateX(-100%); }
+}
+
+::view-transition-group(root) {
+  animation: 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html:active-view-transition-type(forward)::view-transition-old(root) {
+  animation-name: slide-to-left;
+}
+
+html:active-view-transition-type(forward)::view-transition-new(root) {
+  animation-name: slide-from-right;
+}
+
+html:active-view-transition-type(backward)::view-transition-old(root) {
+  animation-name: slide-to-right;
+}
+
+html:active-view-transition-type(backward)::view-transition-new(root) {
+  animation-name: slide-from-left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root) {
+    animation: none !important;
+  }
+}

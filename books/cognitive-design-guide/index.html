@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="paper">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>讓複雜變簡單：易懂教學教材與簡報設計指南</title>
+  <link rel="stylesheet" href="../../shared/styles/tokens.css" />
+  <link rel="stylesheet" href="../../shared/styles/book-reader.css" />
+  <link rel="stylesheet" href="./src/styles/book.css" />
+</head>
+<body>
+  <a href="#main-content" class="skip-link visually-hidden">跳至主要教材區</a>
+
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-cluster">
+        <span class="brand-icon" aria-hidden="true">📖</span>
+        <div>
+          <h1 class="brand-title">讓複雜變簡單：易懂教學教材與簡報設計指南</h1>
+          <p class="brand-subtitle">認知負荷理論 × Mayer 12 原則 × 斷言-視覺證據雙模教材</p>
+        </div>
+      </div>
+      <div class="header-tools">
+        <a href="../../index.html" class="tool-btn back-hub-link">🏠 回工作坊大廳</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" tabindex="-1" class="app-main">
+    <div id="book-app"></div>
+  </main>
+
+  <footer class="app-footer">
+    <p>易懂教學教材與展示簡報工作坊・支援離線單檔雙擊閱讀、簡報投影與雙版型講義列印</p>
+  </footer>
+
+  <p id="sr-announcer" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
+
+  <dialog id="overview-dialog" class="lab-dialog" closedby="any" aria-labelledby="overview-title">
+    <div class="dialog-header">
+      <h2 id="overview-title">🗂️ 單元與投影片總覽（點選直接跳轉）</h2>
+      <form method="dialog">
+        <button type="submit" value="close" class="dialog-close-btn" autofocus aria-label="關閉總覽">✕</button>
+      </form>
+    </div>
+    <div id="overview-dialog-body" class="dialog-body"></div>
+  </dialog>
+
+  <dialog id="glossary-dialog" class="lab-dialog" closedby="any" aria-labelledby="glossary-title">
+    <div class="dialog-header">
+      <h2 id="glossary-title">📚 預習詞彙與核心術語表（Pre-training Glossary）</h2>
+      <form method="dialog">
+        <button type="submit" value="close" class="dialog-close-btn" autofocus aria-label="關閉詞彙表">✕</button>
+      </form>
+    </div>
+    <div id="glossary-dialog-body" class="dialog-body"></div>
+  </dialog>
+
+  <dialog id="print-dialog" class="lab-dialog" closedby="any" aria-labelledby="print-title">
+    <div class="dialog-header">
+      <h2 id="print-title">🖨️ 選擇列印或匯出 PDF 版型</h2>
+      <form method="dialog">
+        <button type="submit" value="close" class="dialog-close-btn" autofocus aria-label="關閉列印選單">✕</button>
+      </form>
+    </div>
+    <div class="dialog-body">
+      <p style="margin-top:0;">系統已針對紙張自動去除按鈕與工具列，請依實際需求選擇輸出格式：</p>
+      <div style="display:grid;gap:0.75rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+        <button type="button" class="pill-btn is-active" data-print-choice="book" style="padding:0.9rem 1rem;border-radius:12px;">
+          📖 列印完整教材（自學深讀版）
+        </button>
+        <button type="button" class="pill-btn" data-print-choice="handout" style="padding:0.9rem 1rem;border-radius:12px;">
+          📽️ 列印簡報＋講者筆記講義
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="shortcuts-dialog" class="lab-dialog" closedby="any" aria-labelledby="shortcuts-title">
+    <div class="dialog-header">
+      <h2 id="shortcuts-title">⌨️ 閱讀與簡報快捷鍵指南</h2>
+      <form method="dialog">
+        <button type="submit" value="close" class="dialog-close-btn" autofocus aria-label="關閉快捷鍵說明">✕</button>
+      </form>
+    </div>
+    <div class="dialog-body">
+      <ul style="margin:0;padding-left:1.2rem;display:grid;gap:0.45rem;">
+        <li><strong>B</strong>：在「📖 教材閱讀模式」與「📽️ 簡報展示模式」間一鍵切換（保留互動元件狀態）</li>
+        <li><strong>← / → / Space</strong>（簡報模式）：切換上一頁 / 下一頁（支援觸控左右滑動）</li>
+        <li><strong>Home / End</strong>（簡報模式）：直接跳至封面或末頁</li>
+        <li><strong>G</strong>：開啟單元與投影片總覽網格</li>
+        <li><strong>N</strong>：開啟或收合講者備忘錄與授課計時器</li>
+        <li><strong>D</strong>：開啟核心專有名詞詞彙庫</li>
+        <li><strong>T</strong>：循環切換主題（溫潤紙本 / 明亮白底 / 深色護眼）</li>
+        <li><strong>P</strong>：開啟列印與 PDF 講義版型選單</li>
+      </ul>
+    </div>
+  </dialog>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
