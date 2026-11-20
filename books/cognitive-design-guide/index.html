@@ -1,0 +1,3463 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="paper">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>讓複雜變簡單：易懂教學教材與簡報設計指南</title>
+  <style>
+/* === Style: ../../shared/styles/tokens.css === */
+:root,
+[data-theme="paper"] {
+  --bg-canvas: #faf6ee;
+  --bg-card: #fffdf9;
+  --bg-subtle: #f2ebe0;
+  --bg-elevated: #ffffff;
+  --ink-primary: #1b2a41;
+  --ink-secondary: #4a5b70;
+  --border-soft: #d6cbb8;
+  --border-strong: #9c8f7a;
+
+  --accent-primary: #1b365d;
+  --accent-bg: #e3eaf5;
+  --accent-ink: #ffffff;
+
+  --highlight-color: #b45309;
+  --highlight-bg: #fef3c7;
+
+  --ok-color: #15803d;
+  --ok-bg: #dcfce7;
+  --err-color: #b91c1c;
+  --err-bg: #fee2e2;
+
+  --focus-ring: #1b365d;
+  --shadow-card: 0 4px 16px rgb(27 42 65 / 0.07);
+  --shadow-stage: 0 12px 32px rgb(27 42 65 / 0.1);
+
+  color-scheme: light;
+}
+
+[data-theme="light"] {
+  --bg-canvas: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-subtle: #f1f5f9;
+  --bg-elevated: #ffffff;
+  --ink-primary: #0f172a;
+  --ink-secondary: #475569;
+  --border-soft: #cbd5e1;
+  --border-strong: #64748b;
+
+  --accent-primary: #1d4ed8;
+  --accent-bg: #dbeafe;
+  --accent-ink: #ffffff;
+
+  --highlight-color: #b45309;
+  --highlight-bg: #fef3c7;
+
+  --ok-color: #15803d;
+  --ok-bg: #dcfce7;
+  --err-color: #b91c1c;
+  --err-bg: #fee2e2;
+
+  --focus-ring: #0f172a;
+  --shadow-card: 0 4px 14px rgb(15 23 42 / 0.06);
+  --shadow-stage: 0 12px 32px rgb(15 23 42 / 0.09);
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg-canvas: #0f172a;
+  --bg-card: #1e293b;
+  --bg-subtle: #273449;
+  --bg-elevated: #273449;
+  --ink-primary: #f1f5f9;
+  --ink-secondary: #cbd5e1;
+  --border-soft: #334155;
+  --border-strong: #64748b;
+
+  --accent-primary: #38bdf8;
+  --accent-bg: #0c4a6e;
+  --accent-ink: #082f49;
+
+  --highlight-color: #fbbf24;
+  --highlight-bg: #451a03;
+
+  --ok-color: #4ade80;
+  --ok-bg: #14532d;
+  --err-color: #fca5a5;
+  --err-bg: #7f1d1d;
+
+  --focus-ring: #7dd3fc;
+  --shadow-card: 0 4px 18px rgb(0 0 0 / 0.35);
+  --shadow-stage: 0 14px 36px rgb(0 0 0 / 0.45);
+
+  color-scheme: dark;
+}
+
+:root {
+  --target-size: 28px;
+  --radius-lg: 16px;
+  --radius-md: 11px;
+  --font-sans: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, -apple-system, sans-serif;
+  --font-display: 'Noto Serif TC', 'PMingLiU', 'Noto Sans TC', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+  --reader-font-scale: 1;
+}
+
+@media (pointer: coarse) {
+  :root {
+    --target-size: 44px;
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+}
+
+body {
+  margin: 0;
+  min-block-size: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow-wrap: break-word;
+  line-height: 1.65;
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+}
+
+h1, h2, h3, h4 {
+  text-wrap: balance;
+  margin-top: 0;
+}
+
+p, li {
+  text-wrap: pretty;
+}
+
+:where(a, code) {
+  overflow-wrap: anywhere;
+}
+
+img, svg {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+/* Component-specific dark code surface with explicit background & color */
+pre,
+code.code-block {
+  color-scheme: dark;
+  background: #0f172a;
+  color: #e2e8f0;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  overflow-x: auto;
+}
+
+code {
+  font-family: var(--font-mono);
+}
+
+/* Visually hidden utility (accessible to screen readers; reveals on focus) */
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1000;
+  background: var(--accent-primary);
+  color: var(--accent-ink);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* Minimum touch/click target sizing & natural interaction feedback */
+:where(button, select, textarea, input:not([type="checkbox"], [type="radio"]), [role="button"], nav a, .back-hub-link, label:has(input[type="checkbox"], input[type="radio"])) {
+  min-block-size: var(--target-size);
+  min-inline-size: var(--target-size);
+}
+
+:where(button) {
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :where(button, .pill-btn, .tool-btn, .play-link) {
+    transition: box-shadow 150ms ease-out, scale 150ms ease-out, background-color 150ms ease-out, border-color 150ms ease-out;
+  }
+}
+
+@media (hover: hover) {
+  button:hover:not(:disabled, [aria-disabled="true"]) {
+    box-shadow: 0 3px 10px rgb(15 23 42 / 0.16);
+  }
+}
+
+button:active:not(:disabled, [aria-disabled="true"]) {
+  scale: 0.97;
+}
+
+button:disabled,
+button[aria-disabled="true"] {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* Shared Header, Main & Footer */
+.app-header {
+  background: var(--bg-card);
+  border-bottom: 2px solid var(--border-soft);
+  padding: 0.75rem max(1rem, env(safe-area-inset-right, 0px)) 0.75rem max(1rem, env(safe-area-inset-left, 0px));
+  padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.brand-cluster {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.brand-icon {
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.brand-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.02rem, 1.55vw, 1.28rem);
+  font-weight: 800;
+  margin: 0;
+  color: var(--ink-primary);
+}
+
+.brand-subtitle {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--ink-secondary);
+}
+
+.nav-pill, .tool-btn, .pill-btn {
+  background: var(--bg-subtle);
+  color: var(--ink-primary);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 0.38rem 0.85rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.32rem;
+  white-space: nowrap;
+}
+
+.nav-pill.is-active,
+.pill-btn.is-active,
+.tool-btn[aria-pressed="true"],
+.pill-btn[aria-pressed="true"] {
+  background: var(--accent-primary);
+  color: var(--accent-ink);
+  border-color: var(--accent-primary);
+  box-shadow: inset 0 0 0 1px var(--accent-ink);
+}
+
+.app-main {
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding: 1rem max(1rem, env(safe-area-inset-right, 0px)) 2rem max(1rem, env(safe-area-inset-left, 0px));
+}
+
+.app-footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ink-secondary);
+  padding: 0.9rem 1rem max(0.9rem, env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--border-soft);
+  background: var(--bg-card);
+}
+
+/* Native <dialog> styling & Top-Layer Animations */
+dialog.lab-dialog {
+  width: min(92vw, 860px);
+  max-height: 86dvh;
+  border: 2px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  background: var(--bg-card);
+  color: var(--ink-primary);
+  box-shadow: 0 24px 48px rgb(15 23 42 / 0.28);
+  opacity: 0;
+  transition-property: opacity, transform, display, overlay;
+  transition-duration: 0.25s;
+  transition-timing-function: ease-out;
+  transition-behavior: allow-discrete;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.lab-dialog {
+    transform: scale(0.94);
+  }
+}
+
+dialog.lab-dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog.lab-dialog::backdrop {
+  background-color: rgba(15, 23, 42, 0);
+  overflow: hidden;
+  overscroll-behavior: contain;
+  transition-property: background-color, display, overlay;
+  transition-duration: 0.25s;
+  transition-timing-function: ease-out;
+  transition-behavior: allow-discrete;
+}
+
+:is(dialog.lab-dialog[open]):where(:not([data-closing])) {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+}
+
+@starting-style {
+  :is(dialog.lab-dialog[open]):where(:not([data-closing])) {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :is(dialog.lab-dialog[open]):where(:not([data-closing])) {
+    transform: scale(1);
+  }
+  @starting-style {
+    :is(dialog.lab-dialog[open]):where(:not([data-closing])) {
+      transform: scale(0.94);
+    }
+  }
+}
+
+:is(dialog.lab-dialog[open]):where(:not([data-closing]))::backdrop {
+  background-color: rgba(15, 23, 42, 0.52);
+}
+
+@starting-style {
+  :is(dialog.lab-dialog[open]):where(:not([data-closing]))::backdrop {
+    background-color: rgba(15, 23, 42, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  dialog.lab-dialog,
+  dialog.lab-dialog::backdrop {
+    transition-duration: 0.1s;
+  }
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1.5px solid var(--border-soft);
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+}
+
+.dialog-close-btn {
+  background: var(--bg-subtle);
+  color: var(--ink-primary);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-weight: 800;
+}
+
+.dialog-body {
+  padding: 1rem 1.25rem;
+  overflow-y: auto;
+}
+
+/* Directional View Transitions for Slide Navigation */
+@keyframes slide-to-left {
+  to { transform: translateX(-100%); }
+}
+
+@keyframes slide-from-right {
+  from { transform: translateX(100%); }
+}
+
+@keyframes slide-to-right {
+  to { transform: translateX(100%); }
+}
+
+@keyframes slide-from-left {
+  from { transform: translateX(-100%); }
+}
+
+::view-transition-group(root) {
+  animation: 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html:active-view-transition-type(forward)::view-transition-old(root) {
+  animation-name: slide-to-left;
+}
+
+html:active-view-transition-type(forward)::view-transition-new(root) {
+  animation-name: slide-from-right;
+}
+
+html:active-view-transition-type(backward)::view-transition-old(root) {
+  animation-name: slide-to-right;
+}
+
+html:active-view-transition-type(backward)::view-transition-new(root) {
+  animation-name: slide-from-left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root) {
+    animation: none !important;
+  }
+}
+
+
+/* === Style: ../../shared/styles/book-reader.css === */
+/* Fluid Document-Slide Dual-Mode Reader & Presenter Styles */
+
+.reader-toolbar-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+[role="toolbar"].reader-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--bg-subtle);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 0.35rem 0.5rem;
+}
+
+@media (max-width: 720px) {
+  [role="toolbar"].reader-toolbar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+    max-width: 100%;
+  }
+  [role="toolbar"].reader-toolbar [role="group"] {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+}
+
+.toolbar-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+}
+
+.toolbar-separator {
+  display: inline-block;
+  inline-size: 1px;
+  block-size: 1.4rem;
+  border-inline-start: 1.5px solid var(--border-strong);
+  margin-inline: 0.15rem;
+}
+
+.top-progress-bar {
+  height: 4px;
+  background: var(--bg-subtle);
+  width: 100%;
+}
+
+.top-progress-fill {
+  height: 100%;
+  background: var(--accent-primary);
+  transition: width 220ms ease-out;
+}
+
+/* =========================================================
+   BOOK MODE (Continuous Explorable Textbook Layout)
+   ========================================================= */
+.book-layout {
+  display: grid;
+  grid-template-columns: 270px minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .book-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.toc-sidebar {
+  position: sticky;
+  top: 1rem;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  box-shadow: var(--shadow-card);
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+}
+
+@media (max-width: 960px) {
+  .toc-sidebar {
+    position: static;
+    max-height: none;
+  }
+}
+
+.toc-heading {
+  font-family: var(--font-display);
+  font-size: 0.96rem;
+  font-weight: 800;
+  margin-bottom: 0.55rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.toc-item-btn {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: var(--ink-secondary);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.toc-item-btn.is-current {
+  background: var(--accent-bg);
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+  font-weight: 800;
+}
+
+.toc-item-num {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.78;
+  font-weight: 800;
+  min-width: 1.4rem;
+}
+
+.toc-item-check {
+  margin-left: auto;
+  color: var(--ok-color);
+  font-weight: 800;
+}
+
+.book-reading-column {
+  min-width: 0;
+  max-width: 72ch;
+  width: 100%;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.book-cover-card {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--accent-bg) 100%);
+  border: 2px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem 1.55rem;
+  box-shadow: var(--shadow-card);
+}
+
+.book-objectives-list {
+  margin: 0.65rem 0 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.unit-article {
+  background: var(--bg-card);
+  border: 2px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1.65rem;
+  box-shadow: var(--shadow-card);
+  scroll-margin-top: 1.25rem;
+}
+
+.unit-article.is-current {
+  border-color: var(--accent-primary);
+}
+
+.unit-kicker-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.unit-badge-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.unit-num-pill {
+  background: var(--accent-primary);
+  color: var(--accent-ink);
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+}
+
+.unit-tag-pill {
+  background: var(--bg-subtle);
+  color: var(--ink-secondary);
+  border: 1px solid var(--border-soft);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.16rem 0.55rem;
+  border-radius: 999px;
+}
+
+.unit-assertion {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.2vw, 1.58rem);
+  line-height: 1.38;
+  font-weight: 800;
+  color: var(--ink-primary);
+  margin-bottom: 1rem;
+}
+
+.unit-visual-figure {
+  margin: 1rem 0 1.2rem;
+  background: var(--bg-canvas);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.unit-visual-figure figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--ink-secondary);
+  font-weight: 700;
+  text-align: center;
+}
+
+.unit-prose {
+  font-size: calc(1.04rem * var(--reader-font-scale, 1));
+  line-height: 1.78;
+  color: var(--ink-primary);
+}
+
+.unit-prose p {
+  margin: 0 0 0.85rem;
+}
+
+.glossary-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  background: var(--highlight-bg);
+  color: var(--highlight-color);
+  border: 1px solid color-mix(in srgb, var(--highlight-color) 40%, transparent);
+  border-radius: 6px;
+  padding: 0.04rem 0.42rem;
+  font-size: 0.92em;
+  font-weight: 800;
+  vertical-align: baseline;
+  min-block-size: auto;
+  min-inline-size: auto;
+}
+
+.unit-callout {
+  margin-top: 1rem;
+  border-radius: 12px;
+  padding: 0.85rem 1.05rem;
+  border: 1.5px solid var(--border-soft);
+  background: var(--bg-subtle);
+}
+
+.unit-callout--tip {
+  background: var(--ok-bg);
+  border-color: var(--ok-color);
+}
+
+.unit-callout--warning {
+  background: var(--err-bg);
+  border-color: var(--err-color);
+}
+
+.unit-callout--example {
+  background: var(--accent-bg);
+  border-color: var(--accent-primary);
+}
+
+.unit-callout-title {
+  font-weight: 800;
+  margin-bottom: 0.28rem;
+  font-size: 0.94rem;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.85rem;
+  margin-top: 0.85rem;
+}
+
+.comparison-panel {
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  border: 1.5px solid var(--border-soft);
+}
+
+.comparison-panel--bad {
+  background: var(--err-bg);
+  border-color: var(--err-color);
+}
+
+.comparison-panel--good {
+  background: var(--ok-bg);
+  border-color: var(--ok-color);
+}
+
+.comparison-panel h4 {
+  margin-bottom: 0.45rem;
+  font-size: 0.95rem;
+}
+
+.comparison-panel ul {
+  margin: 0;
+  padding-left: 1.15rem;
+  font-size: 0.9rem;
+}
+
+/* Interactive Widget Container */
+.widget-host {
+  margin: 1rem 0;
+  background: var(--bg-canvas);
+  border: 2px solid var(--accent-primary);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+}
+
+/* Formative Quiz Card */
+.quiz-box {
+  margin-top: 1.15rem;
+  background: var(--bg-subtle);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 1rem 1.15rem;
+}
+
+.quiz-question {
+  font-weight: 800;
+  margin-bottom: 0.7rem;
+  font-size: 1rem;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.quiz-option-btn {
+  text-align: left;
+  justify-content: flex-start;
+  background: var(--bg-card);
+  color: var(--ink-primary);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 0.58rem 0.85rem;
+  font-size: 0.93rem;
+  font-weight: 600;
+}
+
+.quiz-option-btn.is-correct {
+  background: var(--ok-bg);
+  border-color: var(--ok-color);
+  color: var(--ink-primary);
+  font-weight: 800;
+}
+
+.quiz-option-btn.is-wrong {
+  background: var(--err-bg);
+  border-color: var(--err-color);
+  color: var(--ink-primary);
+}
+
+.quiz-feedback {
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.quiz-feedback.is-ok {
+  background: var(--ok-bg);
+  color: var(--ok-color);
+  border: 1px solid var(--ok-color);
+}
+
+.quiz-feedback.is-err {
+  background: var(--err-bg);
+  color: var(--err-color);
+  border: 1px solid var(--err-color);
+}
+
+.inline-notes-box {
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  background: var(--highlight-bg);
+  border: 1.5px dashed var(--highlight-color);
+  font-size: 0.88rem;
+}
+
+.unit-actions-footer {
+  margin-top: 1.1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border-soft);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+}
+
+/* =========================================================
+   SLIDE MODE (16:9 Assertion-Evidence Presentation Stage)
+   ========================================================= */
+.slide-workspace {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.slide-stage {
+  width: min(100%, 1080px);
+  min-height: clamp(460px, 66dvh, 660px);
+  background: var(--bg-card);
+  border: 2px solid var(--border-soft);
+  border-top: 7px solid var(--accent-primary);
+  border-radius: 20px;
+  box-shadow: var(--shadow-stage);
+  padding: clamp(1.1rem, 2.5vw, 2.1rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.slide-header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.84rem;
+  color: var(--ink-secondary);
+  font-weight: 700;
+}
+
+.slide-assertion {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.7vw, 2.05rem);
+  line-height: 1.32;
+  font-weight: 800;
+  color: var(--ink-primary);
+  margin: 0.35rem 0 0;
+}
+
+.slide-body-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(240px, 0.9fr);
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.slide-body-grid.is-single {
+  grid-template-columns: 1fr;
+}
+
+@media (max-width: 820px) {
+  .slide-body-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.slide-points-panel {
+  background: var(--bg-subtle);
+  border-radius: 14px;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid var(--border-soft);
+}
+
+.slide-points-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.62rem;
+  font-size: calc(1.06rem * var(--reader-font-scale, 1));
+  font-weight: 700;
+}
+
+.slide-rail {
+  width: min(100%, 1080px);
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 0.65rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-card);
+}
+
+.slide-counter {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  font-size: 0.92rem;
+}
+
+.notes-drawer {
+  width: min(100%, 1080px);
+  background: var(--bg-card);
+  border: 2px solid var(--highlight-color);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-card);
+}
+
+.notes-drawer-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.timer-cluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+}
+
+/* Overview Grid & Glossary Dialog Grids */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.85rem;
+}
+
+.overview-card {
+  text-align: left;
+  background: var(--bg-subtle);
+  color: var(--ink-primary);
+  border: 2px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: flex-start;
+}
+
+.overview-card.is-current {
+  border-color: var(--accent-primary);
+  background: var(--accent-bg);
+}
+
+.glossary-grid {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.glossary-card {
+  background: var(--bg-subtle);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 0.9rem 1.05rem;
+}
+
+.glossary-card.is-focused {
+  border-color: var(--highlight-color);
+  background: var(--highlight-bg);
+}
+
+.glossary-term-title {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+
+/* =========================================================
+   PRINT & HANDOUT STYLESHEET (@media print)
+   ========================================================= */
+.print-handout-container {
+  display: none;
+}
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  :root,
+  html,
+  body,
+  [data-theme="dark"],
+  [data-theme="paper"],
+  [data-theme="light"] {
+    background: #ffffff !important;
+    color: #111827 !important;
+    color-scheme: light !important;
+  }
+
+  .app-header,
+  .reader-toolbar-wrap,
+  .top-progress-bar,
+  .toc-sidebar,
+  .slide-workspace,
+  .unit-actions-footer,
+  .inline-notes-box,
+  .app-footer,
+  .no-print,
+  dialog {
+    display: none !important;
+  }
+
+  .app-main {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  body[data-print-mode="book"] .book-layout {
+    display: block !important;
+  }
+
+  body[data-print-mode="book"] .book-reading-column {
+    max-width: 100% !important;
+  }
+
+  body[data-print-mode="book"] .unit-article,
+  body[data-print-mode="book"] .unit-visual-figure,
+  body[data-print-mode="book"] .unit-callout,
+  body[data-print-mode="book"] .quiz-box {
+    box-shadow: none !important;
+    border-color: #94a3b8 !important;
+    break-inside: avoid;
+  }
+
+  body[data-print-mode="handout"] .book-layout {
+    display: none !important;
+  }
+
+  body[data-print-mode="handout"] .print-handout-container {
+    display: block !important;
+  }
+
+  .handout-sheet {
+    border: 1.5px solid #64748b;
+    border-radius: 10px;
+    padding: 1rem 1.15rem;
+    margin-bottom: 1rem;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .handout-notes {
+    margin-top: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    background: #f8fafc;
+    border-left: 4px solid #1b365d;
+    font-size: 0.92rem;
+  }
+}
+
+
+/* === Style: ./src/styles/book.css === */
+/* Book-specific styles for cognitive-design-guide widgets & diagrams */
+
+.sim-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+  gap: 0.55rem;
+  margin: 0.75rem 0;
+}
+
+.sim-toggle-btn {
+  text-align: left;
+  justify-content: flex-start;
+  background: var(--bg-card);
+  color: var(--ink-primary);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.sim-toggle-btn[aria-pressed="true"] {
+  background: var(--ok-bg);
+  border-color: var(--ok-color);
+  color: var(--ink-primary);
+  box-shadow: inset 0 0 0 1px var(--ok-color);
+}
+
+.sim-slider-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 0.55rem 0.8rem;
+}
+
+.sim-verdict {
+  margin-top: 0.7rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.sim-verdict.is-overload {
+  background: var(--err-bg);
+  color: var(--err-color);
+  border: 1.5px solid var(--err-color);
+}
+
+.sim-verdict.is-tight {
+  background: var(--highlight-bg);
+  color: var(--highlight-color);
+  border: 1.5px solid var(--highlight-color);
+}
+
+.sim-verdict.is-optimal {
+  background: var(--ok-bg);
+  color: var(--ok-color);
+  border: 1.5px solid var(--ok-color);
+}
+
+.makeover-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.makeover-preview {
+  background: var(--bg-card);
+  border: 2px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 1rem 1.15rem;
+}
+
+.makeover-preview.is-bad {
+  border-top: 5px solid var(--err-color);
+}
+
+.makeover-preview.is-good {
+  border-top: 5px solid var(--ok-color);
+}
+
+.makeover-annotation-list {
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  background: var(--highlight-bg);
+  border: 1px dashed var(--highlight-color);
+  font-size: 0.86rem;
+}
+
+</style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link visually-hidden">跳至主要教材區</a>
+
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-cluster">
+        <span class="brand-icon" aria-hidden="true">📖</span>
+        <div>
+          <h1 class="brand-title">讓複雜變簡單：易懂教學教材與簡報設計指南</h1>
+          <p class="brand-subtitle">認知負荷理論 × Mayer 12 原則 × 斷言-視覺證據雙模教材</p>
+        </div>
+      </div>
+      <div class="header-tools">
+        <a href="../../index.html" class="tool-btn back-hub-link">🏠 回工作坊大廳</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" tabindex="-1" class="app-main">
+    <div id="book-app"></div>
+  </main>
+
+  <footer class="app-footer">
+    <p>易懂教學教材與展示簡報工作坊・支援離線單檔雙擊閱讀、簡報投影與雙版型講義列印</p>
+  </footer>
+
+  <p id="sr-announcer" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
+
+  <dialog id="overview-dialog" class="lab-dialog" closedby="any" aria-labelledby="overview-title">
+    <div class="dialog-header">
+      <h2 id="overview-title">🗂️ 單元與投影片總覽（點選直接跳轉）</h2>
+      <form method="dialog">
+        <button type="submit" value="close" class="dialog-close-btn" autofocus aria-label="關閉總覽">✕</button>
+      </form>
+    </div>
+    <div id="overview-dialog-body" class="dialog-body"></div>
+  </dialog>
+
+  <dialog id="glossary-dialog" class="lab-dialog" closedby="any" aria-labelledby="glossary-title">
+    <div class="dialog-header">
+      <h2 id="glossary-title">📚 預習詞彙與核心術語表（Pre-training Glossary）</h2>
+      <form method="dialog">
+        <button type="submit" value="close" class="dialog-close-btn" autofocus aria-label="關閉詞彙表">✕</button>
+      </form>
+    </div>
+    <div id="glossary-dialog-body" class="dialog-body"></div>
+  </dialog>
+
+  <dialog id="print-dialog" class="lab-dialog" closedby="any" aria-labelledby="print-title">
+    <div class="dialog-header">
+      <h2 id="print-title">🖨️ 選擇列印或匯出 PDF 版型</h2>
+      <form method="dialog">
+        <button type="submit" value="close" class="dialog-close-btn" autofocus aria-label="關閉列印選單">✕</button>
+      </form>
+    </div>
+    <div class="dialog-body">
+      <p style="margin-top:0;">系統已針對紙張自動去除按鈕與工具列，請依實際需求選擇輸出格式：</p>
+      <div style="display:grid;gap:0.75rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+        <button type="button" class="pill-btn is-active" data-print-choice="book" style="padding:0.9rem 1rem;border-radius:12px;">
+          📖 列印完整教材（自學深讀版）
+        </button>
+        <button type="button" class="pill-btn" data-print-choice="handout" style="padding:0.9rem 1rem;border-radius:12px;">
+          📽️ 列印簡報＋講者筆記講義
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="shortcuts-dialog" class="lab-dialog" closedby="any" aria-labelledby="shortcuts-title">
+    <div class="dialog-header">
+      <h2 id="shortcuts-title">⌨️ 閱讀與簡報快捷鍵指南</h2>
+      <form method="dialog">
+        <button type="submit" value="close" class="dialog-close-btn" autofocus aria-label="關閉快捷鍵說明">✕</button>
+      </form>
+    </div>
+    <div class="dialog-body">
+      <ul style="margin:0;padding-left:1.2rem;display:grid;gap:0.45rem;">
+        <li><strong>B</strong>：在「📖 教材閱讀模式」與「📽️ 簡報展示模式」間一鍵切換（保留互動元件狀態）</li>
+        <li><strong>← / → / Space</strong>（簡報模式）：切換上一頁 / 下一頁（支援觸控左右滑動）</li>
+        <li><strong>Home / End</strong>（簡報模式）：直接跳至封面或末頁</li>
+        <li><strong>G</strong>：開啟單元與投影片總覽網格</li>
+        <li><strong>N</strong>：開啟或收合講者備忘錄與授課計時器</li>
+        <li><strong>D</strong>：開啟核心專有名詞詞彙庫</li>
+        <li><strong>T</strong>：循環切換主題（溫潤紙本 / 明亮白底 / 深色護眼）</li>
+        <li><strong>P</strong>：開啟列印與 PDF 講義版型選單</li>
+      </ul>
+    </div>
+  </dialog>
+
+  <script>
+'use strict';
+// === Module: ../../shared/engine/bookEngine.js ===
+const __mod_bookEngine = (() => {
+/**
+ * Pure domain logic for Fluid Document-Slide teaching books.
+ * Zero DOM dependencies — safe to test directly in Node.js and bundle via scripts/build.mjs.
+ */
+
+const THEME_ORDER = ['paper', 'light', 'dark'];
+
+function escapeHtml(str) {
+  return String(str ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function countReadableUnits(text) {
+  if (!text) return 0;
+  const plain = String(text)
+    .replace(/\[\[([a-z0-9-]+)(?:\|([^\]]+))?\]\]/gi, (_, id, label) => label || id)
+    .replace(/<[^>]+>/g, ' ');
+  const cjkMatches = plain.match(/[\u4E00-\u9FFF\u3400-\u4DBF\u3040-\u30FF\uAC00-\uD7AF]/g) || [];
+  const latinWords = plain
+    .replace(/[\u4E00-\u9FFF\u3400-\u4DBF\u3040-\u30FF\uAC00-\uD7AF]/g, ' ')
+    .match(/[A-Za-z0-9_.-]+/g) || [];
+  return cjkMatches.length + latinWords.length;
+}
+
+function estimateReadingMinutes(book) {
+  if (!book || !Array.isArray(book.units) || book.units.length === 0) return 1;
+  let totalUnits = 0;
+  for (const unit of book.units) {
+    totalUnits += countReadableUnits(unit.assertion);
+    for (const p of unit.bookProse || []) {
+      totalUnits += countReadableUnits(p);
+    }
+    for (const pt of unit.slidePoints || []) {
+      totalUnits += countReadableUnits(pt);
+    }
+    totalUnits += countReadableUnits(unit.speakerNotes) * 0.5;
+  }
+  return Math.max(1, Math.round(totalUnits / 210));
+}
+
+function buildGlossaryIndex(glossary) {
+  const map = new Map();
+  if (!Array.isArray(glossary)) return map;
+  for (const item of glossary) {
+    if (item && item.id) {
+      map.set(item.id, item);
+    }
+  }
+  return map;
+}
+
+function extractGlossaryRefs(text) {
+  if (!text) return [];
+  const refs = [];
+  const regex = /\[\[([a-z0-9-]+)(?:\|([^\]]+))?\]\]/gi;
+  let match;
+  while ((match = regex.exec(String(text))) !== null) {
+    refs.push(match[1]);
+  }
+  return refs;
+}
+
+function renderGlossaryTokens(text, glossaryMap) {
+  const raw = String(text ?? '');
+  const tokenRegex = /\[\[([a-z0-9-]+)(?:\|([^\]]+))?\]\]/gi;
+  let out = '';
+  let lastIndex = 0;
+  let match;
+
+  while ((match = tokenRegex.exec(raw)) !== null) {
+    out += escapeHtml(raw.slice(lastIndex, match.index));
+    const termId = match[1];
+    const customLabel = match[2];
+    const entry = glossaryMap instanceof Map ? glossaryMap.get(termId) : null;
+    if (entry) {
+      const label = customLabel || entry.term;
+      out += `<button type="button" class="glossary-chip" data-glossary-term="${escapeHtml(termId)}" title="點擊查看「${escapeHtml(entry.term)}」白話解釋">${escapeHtml(label)}</button>`;
+    } else {
+      out += escapeHtml(customLabel || termId);
+    }
+    lastIndex = tokenRegex.lastIndex;
+  }
+
+  out += escapeHtml(raw.slice(lastIndex));
+  return out;
+}
+
+function normalizeBookData(rawBook) {
+  const book = rawBook && typeof rawBook === 'object' ? rawBook : {};
+  const units = Array.isArray(book.units) ? book.units : [];
+  const glossary = Array.isArray(book.glossary) ? book.glossary : [];
+  return {
+    id: book.id || 'untitled-book',
+    title: book.title || '未命名教材',
+    subtitle: book.subtitle || '',
+    category: book.category || '教學設計',
+    audience: book.audience || '一般學習者',
+    level: book.level || '入門',
+    estimatedMinutes: book.estimatedMinutes || estimateReadingMinutes(book),
+    learningObjectives: Array.isArray(book.learningObjectives) ? book.learningObjectives : [],
+    glossary,
+    units: units.map((u, idx) => ({
+      ...u,
+      id: u.id || `unit-${idx + 1}`,
+      title: u.title || `單元 ${idx + 1}`,
+      assertion: u.assertion || u.title || '',
+      slidePoints: Array.isArray(u.slidePoints) ? u.slidePoints : [],
+      bookProse: Array.isArray(u.bookProse) ? u.bookProse : [],
+      durationSec: Number(u.durationSec) > 0 ? Number(u.durationSec) : 60,
+    })),
+  };
+}
+
+function clampFontScale(scale) {
+  const num = Number(scale);
+  if (!Number.isFinite(num)) return 1;
+  return Math.min(1.35, Math.max(0.85, Math.round(num * 100) / 100));
+}
+
+function createViewerState({
+  book,
+  initialMode = 'book',
+  initialUnitId = null,
+  initialTheme = 'paper',
+  initialFontScale = 1,
+  initialNotesOpen = false,
+  savedProgress = null,
+} = {}) {
+  const normalized = normalizeBookData(book);
+  const unitCount = normalized.units.length;
+  let currentIndex = 0;
+
+  if (initialUnitId && unitCount > 0) {
+    const idx = normalized.units.findIndex((u) => u.id === initialUnitId);
+    if (idx >= 0) currentIndex = idx;
+  } else if (savedProgress && Number.isInteger(savedProgress.lastUnitIndex) && unitCount > 0) {
+    currentIndex = Math.max(0, Math.min(unitCount - 1, savedProgress.lastUnitIndex));
+  }
+
+  const completedUnitIds = new Set(
+    Array.isArray(savedProgress?.completedUnitIds)
+      ? savedProgress.completedUnitIds.filter((id) => normalized.units.some((u) => u.id === id))
+      : []
+  );
+
+  if (unitCount > 0) {
+    completedUnitIds.add(normalized.units[currentIndex].id);
+  }
+
+  const quizAnswers =
+    savedProgress && savedProgress.quizAnswers && typeof savedProgress.quizAnswers === 'object'
+      ? { ...savedProgress.quizAnswers }
+      : {};
+
+  const widgetStates =
+    savedProgress && savedProgress.widgetStates && typeof savedProgress.widgetStates === 'object'
+      ? { ...savedProgress.widgetStates }
+      : {};
+
+  return {
+    bookId: normalized.id,
+    unitIds: normalized.units.map((u) => u.id),
+    quizUnitIds: normalized.units.filter((u) => u.quiz).map((u) => u.id),
+    mode: initialMode === 'slide' ? 'slide' : 'book',
+    currentIndex,
+    theme: THEME_ORDER.includes(initialTheme) ? initialTheme : 'paper',
+    fontScale: clampFontScale(initialFontScale),
+    notesOpen: Boolean(initialNotesOpen),
+    completedUnitIds: Array.from(completedUnitIds),
+    quizAnswers,
+    widgetStates,
+  };
+}
+
+function transitionViewerState(state, action) {
+  if (!state || !action) return state;
+  const total = state.unitIds.length;
+
+  const markAt = (idx, existingCompleted) => {
+    if (total === 0) return existingCompleted;
+    const id = state.unitIds[idx];
+    if (!id || existingCompleted.includes(id)) return existingCompleted;
+    return [...existingCompleted, id];
+  };
+
+  switch (action.type) {
+    case 'SET_MODE': {
+      const nextMode = action.mode === 'slide' ? 'slide' : 'book';
+      if (nextMode === state.mode) return state;
+      return { ...state, mode: nextMode };
+    }
+    case 'TOGGLE_MODE': {
+      return { ...state, mode: state.mode === 'slide' ? 'book' : 'slide' };
+    }
+    case 'GO_TO_UNIT': {
+      if (total === 0) return state;
+      const target = Math.max(0, Math.min(total - 1, Number(action.index) || 0));
+      return {
+        ...state,
+        currentIndex: target,
+        completedUnitIds: markAt(target, state.completedUnitIds),
+      };
+    }
+    case 'GO_TO_UNIT_ID': {
+      const idx = state.unitIds.indexOf(action.unitId);
+      if (idx < 0) return state;
+      return {
+        ...state,
+        currentIndex: idx,
+        completedUnitIds: markAt(idx, state.completedUnitIds),
+      };
+    }
+    case 'NEXT_UNIT': {
+      if (total === 0 || state.currentIndex >= total - 1) return state;
+      const target = state.currentIndex + 1;
+      return {
+        ...state,
+        currentIndex: target,
+        completedUnitIds: markAt(target, state.completedUnitIds),
+      };
+    }
+    case 'PREV_UNIT': {
+      if (total === 0 || state.currentIndex <= 0) return state;
+      const target = state.currentIndex - 1;
+      return {
+        ...state,
+        currentIndex: target,
+        completedUnitIds: markAt(target, state.completedUnitIds),
+      };
+    }
+    case 'FIRST_UNIT': {
+      if (total === 0) return state;
+      return {
+        ...state,
+        currentIndex: 0,
+        completedUnitIds: markAt(0, state.completedUnitIds),
+      };
+    }
+    case 'LAST_UNIT': {
+      if (total === 0) return state;
+      const target = total - 1;
+      return {
+        ...state,
+        currentIndex: target,
+        completedUnitIds: markAt(target, state.completedUnitIds),
+      };
+    }
+    case 'MARK_COMPLETED': {
+      if (!action.unitId || !state.unitIds.includes(action.unitId)) return state;
+      if (state.completedUnitIds.includes(action.unitId)) return state;
+      return {
+        ...state,
+        completedUnitIds: [...state.completedUnitIds, action.unitId],
+      };
+    }
+    case 'ANSWER_QUIZ': {
+      if (!action.unitId) return state;
+      return {
+        ...state,
+        quizAnswers: {
+          ...state.quizAnswers,
+          [action.unitId]: {
+            optionIndex: Number(action.optionIndex),
+            isCorrect: Boolean(action.isCorrect),
+          },
+        },
+        completedUnitIds: state.completedUnitIds.includes(action.unitId)
+          ? state.completedUnitIds
+          : [...state.completedUnitIds, action.unitId],
+      };
+    }
+    case 'SET_THEME': {
+      if (!THEME_ORDER.includes(action.theme)) return state;
+      return { ...state, theme: action.theme };
+    }
+    case 'CYCLE_THEME': {
+      const idx = THEME_ORDER.indexOf(state.theme);
+      const nextTheme = THEME_ORDER[(idx + 1) % THEME_ORDER.length];
+      return { ...state, theme: nextTheme };
+    }
+    case 'SET_FONT_SCALE': {
+      return { ...state, fontScale: clampFontScale(action.scale) };
+    }
+    case 'TOGGLE_NOTES': {
+      const nextOpen =
+        typeof action.open === 'boolean' ? action.open : !state.notesOpen;
+      return { ...state, notesOpen: nextOpen };
+    }
+    case 'SET_WIDGET_STATE': {
+      if (!action.widgetId || typeof action.patch !== 'object' || !action.patch) return state;
+      const prevWidget = state.widgetStates[action.widgetId] || {};
+      return {
+        ...state,
+        widgetStates: {
+          ...state.widgetStates,
+          [action.widgetId]: { ...prevWidget, ...action.patch },
+        },
+      };
+    }
+    default:
+      return state;
+  }
+}
+
+function computeProgress(state) {
+  const totalUnits = state?.unitIds?.length || 0;
+  const completedCount = state?.completedUnitIds?.length || 0;
+  const percentage = totalUnits > 0 ? Math.round((completedCount / totalUnits) * 100) : 0;
+  const quizUnitIds = state?.quizUnitIds || [];
+  let quizCorrectCount = 0;
+  for (const qId of quizUnitIds) {
+    if (state.quizAnswers?.[qId]?.isCorrect) {
+      quizCorrectCount++;
+    }
+  }
+  return {
+    completedCount,
+    totalUnits,
+    percentage,
+    quizCorrectCount,
+    totalQuizzes: quizUnitIds.length,
+  };
+}
+
+function serializeProgress(state) {
+  return JSON.stringify({
+    version: 1,
+    bookId: state.bookId,
+    lastUnitIndex: state.currentIndex,
+    theme: state.theme,
+    fontScale: state.fontScale,
+    completedUnitIds: state.completedUnitIds,
+    quizAnswers: state.quizAnswers,
+    widgetStates: state.widgetStates,
+  });
+}
+
+function deserializeProgress(rawJson) {
+  if (!rawJson) return null;
+  try {
+    const parsed = JSON.parse(rawJson);
+    if (!parsed || typeof parsed !== 'object') return null;
+    return {
+      lastUnitIndex: Number.isInteger(parsed.lastUnitIndex) ? parsed.lastUnitIndex : 0,
+      theme: THEME_ORDER.includes(parsed.theme) ? parsed.theme : 'paper',
+      fontScale: clampFontScale(parsed.fontScale || 1),
+      completedUnitIds: Array.isArray(parsed.completedUnitIds) ? parsed.completedUnitIds : [],
+      quizAnswers: parsed.quizAnswers && typeof parsed.quizAnswers === 'object' ? parsed.quizAnswers : {},
+      widgetStates: parsed.widgetStates && typeof parsed.widgetStates === 'object' ? parsed.widgetStates : {},
+    };
+  } catch {
+    return null;
+  }
+}
+
+return { escapeHtml, countReadableUnits, estimateReadingMinutes, buildGlossaryIndex, extractGlossaryRefs, renderGlossaryTokens, normalizeBookData, clampFontScale, createViewerState, transitionViewerState, computeProgress, serializeProgress, deserializeProgress, THEME_ORDER };
+})();
+
+// === Module: ../../shared/ui/dialogHelper.js ===
+const __mod_dialogHelper = (() => {
+/**
+ * Accessible native <dialog> helper with progressive top-layer exit animation fallback
+ * and bounding-box light-dismiss fallback (`closedby="any"`).
+ */
+
+let supportsDisplayTransition;
+
+function canTransitionDisplay() {
+  if (supportsDisplayTransition !== undefined) return supportsDisplayTransition;
+  if (typeof window === 'undefined' || !window.CSS?.supports?.('transition-behavior', 'allow-discrete') || !document.body) {
+    return false;
+  }
+  const probe = document.createElement('div');
+  probe.style.cssText = 'transition: display 1s allow-discrete !important; display: block;';
+  document.body.appendChild(probe);
+  getComputedStyle(probe).display;
+  probe.style.display = 'none';
+  supportsDisplayTransition = getComputedStyle(probe).display === 'block';
+  probe.remove();
+  return supportsDisplayTransition;
+}
+
+function supportsTopLayerExit() {
+  return Boolean(typeof window !== 'undefined' && window.CSS?.supports?.('overlay', 'auto') && canTransitionDisplay());
+}
+
+async function closeTopLayer(dialog) {
+  if (!dialog?.open) return;
+  if (!supportsTopLayerExit()) {
+    dialog.setAttribute('data-closing', '');
+    const animations = dialog.getAnimations ? dialog.getAnimations({ subtree: true }) : [];
+    if (animations.length > 0) {
+      await Promise.race([
+        Promise.allSettled(animations.map((a) => a.finished)),
+        new Promise((r) => setTimeout(r, 400)),
+      ]);
+    }
+    if (!dialog.hasAttribute('data-closing')) return;
+    dialog.removeAttribute('data-closing');
+  }
+  dialog.close();
+}
+
+function setupAccessibleDialogs(selector = 'dialog.lab-dialog') {
+  const dialogs = Array.from(document.querySelectorAll(selector));
+
+  if (typeof HTMLDialogElement !== 'undefined' && !('closedBy' in HTMLDialogElement.prototype)) {
+    const outside = (e, dialog) => {
+      const r = dialog.getBoundingClientRect();
+      return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+    };
+    for (const dialog of dialogs) {
+      let pressedOutside = false;
+      dialog.addEventListener('pointerdown', (e) => {
+        pressedOutside = outside(e, dialog);
+      });
+      dialog.addEventListener('pointerup', (e) => {
+        if (pressedOutside && outside(e, dialog)) {
+          closeTopLayer(dialog);
+        }
+      });
+    }
+  }
+
+  for (const dialog of dialogs) {
+    dialog.addEventListener('cancel', (event) => {
+      event.preventDefault();
+      closeTopLayer(dialog);
+    });
+    dialog.addEventListener('close', () => {
+      dialog.removeAttribute('data-closing');
+      dialog.returnValue = '';
+    });
+  }
+
+  return {
+    dialogs,
+    closeAnimated: closeTopLayer,
+  };
+}
+
+return { canTransitionDisplay, supportsTopLayerExit, closeTopLayer, setupAccessibleDialogs };
+})();
+
+// === Module: ../../shared/ui/toolbarHelper.js ===
+const __mod_toolbarHelper = (() => {
+/**
+ * Accessible composite toolbar helper.
+ * Keeps native `focusgroup="toolbar wrap"` on supporting browsers and installs
+ * a roving-tabindex + arrow-key fallback ONLY when native focusGroup is missing.
+ */
+
+function setupAccessibleToolbars(root = document) {
+  const toolbars = Array.from(root.querySelectorAll('[role="toolbar"]'));
+  const hasNativeFocusGroup =
+    typeof HTMLElement !== 'undefined' && 'focusGroup' in HTMLElement.prototype;
+
+  for (const bar of toolbars) {
+    if (bar.dataset.toolbarBound === 'true') continue;
+    bar.dataset.toolbarBound = 'true';
+
+    // Guard aria-disabled controls against click activation while keeping them focusable
+    bar.addEventListener('click', (event) => {
+      const targetBtn = event.target.closest('button, [role="button"]');
+      if (targetBtn && targetBtn.getAttribute('aria-disabled') === 'true') {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    }, true);
+
+    if (hasNativeFocusGroup) continue;
+
+    const getItems = () =>
+      Array.from(bar.querySelectorAll('button, [role="button"], a[href]')).filter(
+        (el) => !el.disabled && el.offsetParent !== null
+      );
+
+    const initialItems = getItems();
+    initialItems.forEach((item, index) => {
+      item.tabIndex = index === 0 ? 0 : -1;
+    });
+
+    bar.addEventListener('focusin', (event) => {
+      const item = event.target.closest('button, [role="button"], a[href]');
+      if (!item || !bar.contains(item)) return;
+      const items = getItems();
+      if (!items.includes(item)) return;
+      items.forEach((b) => {
+        b.tabIndex = b === item ? 0 : -1;
+      });
+    });
+
+    bar.addEventListener('keydown', (event) => {
+      const items = getItems();
+      if (items.length === 0) return;
+
+      const currentIdx = items.indexOf(document.activeElement);
+      if (currentIdx === -1) return;
+
+      const vertical = bar.getAttribute('aria-orientation') === 'vertical';
+      const rtl = typeof getComputedStyle === 'function' && getComputedStyle(bar).direction === 'rtl';
+      const steps = vertical
+        ? { ArrowDown: 1, ArrowUp: -1 }
+        : { ArrowRight: rtl ? -1 : 1, ArrowLeft: rtl ? 1 : -1 };
+
+      let nextIdx = null;
+      if (event.key in steps) {
+        nextIdx = (currentIdx + steps[event.key] + items.length) % items.length;
+      } else if (event.key === 'Home') {
+        nextIdx = 0;
+      } else if (event.key === 'End') {
+        nextIdx = items.length - 1;
+      }
+
+      if (nextIdx === null) return;
+      event.preventDefault();
+      const target = items[nextIdx];
+      items.forEach((b) => {
+        b.tabIndex = b === target ? 0 : -1;
+      });
+      target.focus();
+    });
+  }
+
+  return toolbars;
+}
+
+return { setupAccessibleToolbars };
+})();
+
+// === Module: ../../shared/engine/bookViewer.js ===
+const __mod_bookViewer = (() => {
+const { buildGlossaryIndex, computeProgress, createViewerState, deserializeProgress, escapeHtml, normalizeBookData, renderGlossaryTokens, serializeProgress, transitionViewerState } = __mod_bookEngine;
+const { closeTopLayer, setupAccessibleDialogs } = __mod_dialogHelper;
+const { setupAccessibleToolbars } = __mod_toolbarHelper;
+
+const THEME_LABELS = {
+  paper: '溫潤紙本',
+  light: '明亮白底',
+  dark: '深色護眼',
+};
+
+function formatClock(totalSeconds) {
+  const sec = Math.max(0, Math.floor(totalSeconds));
+  const m = String(Math.floor(sec / 60)).padStart(2, '0');
+  const s = String(sec % 60).padStart(2, '0');
+  return `${m}:${s}`;
+}
+
+function mountBookViewer({ book, widgets = {}, rootSelector = '#book-app' }) {
+  const appRoot = document.querySelector(rootSelector);
+  if (!appRoot) return null;
+
+  const normalized = normalizeBookData(book);
+  const glossaryMap = buildGlossaryIndex(normalized.glossary);
+  const storageKey = `book_${normalized.id}_progress_v1`;
+
+  let saved = null;
+  try {
+    saved = deserializeProgress(window.localStorage.getItem(storageKey));
+  } catch {
+    saved = null;
+  }
+
+  let initialMode = 'book';
+  let initialUnitId = null;
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('mode') === 'slide') initialMode = 'slide';
+    if (params.get('mode') === 'book') initialMode = 'book';
+    if (window.location.hash && window.location.hash.length > 1) {
+      initialUnitId = decodeURIComponent(window.location.hash.slice(1));
+    }
+  } catch {
+    // Ignore URL parsing errors on restricted offline contexts
+  }
+
+  let state = createViewerState({
+    book: normalized,
+    initialMode,
+    initialUnitId,
+    initialTheme: saved?.theme || 'paper',
+    initialFontScale: saved?.fontScale || 1,
+    initialNotesOpen: initialMode === 'slide',
+    savedProgress: saved,
+  });
+
+  // Pacing timer state (live presenter clock)
+  let timerRunning = false;
+  let timerSeconds = 0;
+  let timerIntervalId = null;
+
+  const announcer = document.getElementById('sr-announcer');
+  const announce = (msg) => {
+    if (!announcer || !msg) return;
+    announcer.textContent = '';
+    requestAnimationFrame(() => {
+      announcer.textContent = msg;
+    });
+  };
+
+  const persistState = () => {
+    try {
+      window.localStorage.setItem(storageKey, serializeProgress(state));
+    } catch {
+      // Safe no-op if storage is unavailable
+    }
+    try {
+      const unitId = state.unitIds[state.currentIndex];
+      if (unitId && window.location.protocol !== 'file:') {
+        const url = new URL(window.location.href);
+        url.searchParams.set('mode', state.mode);
+        url.hash = unitId;
+        window.history.replaceState(null, '', url.toString());
+      } else if (unitId) {
+        window.history.replaceState(null, '', `#${unitId}`);
+      }
+    } catch {
+      // Safe no-op on file:// origins that disallow replaceState
+    }
+  };
+
+  const applyThemeAndScale = () => {
+    document.documentElement.setAttribute('data-theme', state.theme);
+    document.documentElement.style.setProperty('--reader-font-scale', String(state.fontScale));
+    document.body.setAttribute('data-view-mode', state.mode);
+    if (!document.body.getAttribute('data-print-mode')) {
+      document.body.setAttribute('data-print-mode', state.mode === 'slide' ? 'handout' : 'book');
+    }
+  };
+
+  const navigateWithTransition = (updateDOM, direction) => {
+    const reducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (!reducedMotion && typeof document.startViewTransition === 'function') {
+      try {
+        document.startViewTransition({
+          update: updateDOM,
+          types: [direction],
+        });
+        return;
+      } catch {
+        // Fallback when browser supports callback-only startViewTransition
+      }
+    }
+    updateDOM();
+  };
+
+  function renderVisualBlock(unit, { compact = false } = {}) {
+    const parts = [];
+    if (unit.widgetId) {
+      parts.push(
+        `<div class="widget-host" data-widget-id="${escapeHtml(unit.widgetId)}" data-unit-id="${escapeHtml(unit.id)}"></div>`
+      );
+    }
+    if (unit.visual && unit.visual.svg) {
+      parts.push(`
+        <figure class="unit-visual-figure">
+          ${unit.visual.svg}
+          ${unit.visual.caption ? `<figcaption>${escapeHtml(unit.visual.caption)}</figcaption>` : ''}
+        </figure>
+      `);
+    }
+    if (unit.comparison) {
+      const bad = unit.comparison.before || {};
+      const good = unit.comparison.after || {};
+      parts.push(`
+        <div class="comparison-grid">
+          <div class="comparison-panel comparison-panel--bad">
+            <h4>❌ ${escapeHtml(bad.title || '傳統作法')}</h4>
+            <ul>${(bad.points || []).map((p) => `<li>${escapeHtml(p)}</li>`).join('')}</ul>
+          </div>
+          <div class="comparison-panel comparison-panel--good">
+            <h4>✅ ${escapeHtml(good.title || '推薦作法')}</h4>
+            <ul>${(good.points || []).map((p) => `<li>${escapeHtml(p)}</li>`).join('')}</ul>
+          </div>
+        </div>
+      `);
+    }
+    if (Array.isArray(unit.glossaryFocusIds) && unit.glossaryFocusIds.length > 0) {
+      parts.push(`
+        <div class="glossary-grid">
+          ${unit.glossaryFocusIds
+            .map((gId) => {
+              const entry = glossaryMap.get(gId);
+              if (!entry) return '';
+              return `
+                <div class="glossary-card">
+                  <div class="glossary-term-title">${escapeHtml(entry.term)} <small>(${escapeHtml(entry.en || '')})</small></div>
+                  <div>${escapeHtml(entry.definition)}</div>
+                  ${entry.analogy ? `<div style="margin-top:0.35rem;color:var(--ink-secondary);font-size:0.9rem;">💡 <strong>生活比喻：</strong>${escapeHtml(entry.analogy)}</div>` : ''}
+                </div>
+              `;
+            })
+            .join('')}
+        </div>
+      `);
+    }
+    if (Array.isArray(unit.checklist) && unit.checklist.length > 0 && !compact) {
+      parts.push(`
+        <div class="unit-callout unit-callout--example">
+          <div class="unit-callout-title">✅ 交付前行動檢查清單</div>
+          <ul style="margin:0.35rem 0 0;padding-left:1.2rem;">
+            ${unit.checklist.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
+          </ul>
+        </div>
+      `);
+    }
+    return parts.join('');
+  }
+
+  function renderQuizBlock(unit) {
+    if (!unit.quiz) return '';
+    const q = unit.quiz;
+    const savedAnswer = state.quizAnswers[unit.id];
+    const selectedIdx = savedAnswer ? savedAnswer.optionIndex : null;
+    const chosenOpt = selectedIdx !== null ? q.options[selectedIdx] : null;
+    const isCorrect = savedAnswer ? savedAnswer.isCorrect : false;
+
+    return `
+      <section class="quiz-box" aria-label="隨堂觀念檢測">
+        <div class="quiz-question">🧩 隨堂動腦：${escapeHtml(q.question)}</div>
+        <div class="quiz-options">
+          ${q.options
+            .map((opt, idx) => {
+              let cls = 'quiz-option-btn';
+              if (selectedIdx === idx) {
+                cls += idx === q.correctIndex ? ' is-correct' : ' is-wrong';
+              }
+              return `
+                <button type="button"
+                  class="${cls}"
+                  data-quiz-unit="${escapeHtml(unit.id)}"
+                  data-quiz-option="${idx}"
+                  aria-pressed="${selectedIdx === idx ? 'true' : 'false'}">
+                  ${String.fromCharCode(65 + idx)}. ${escapeHtml(opt.text)}
+                </button>
+              `;
+            })
+            .join('')}
+        </div>
+        ${
+          chosenOpt
+            ? `<div class="quiz-feedback ${isCorrect ? 'is-ok' : 'is-err'}" role="status">
+                 ${isCorrect ? '🎉 答對了！' : '💡 再想一下：'}${escapeHtml(chosenOpt.explanation)}
+               </div>`
+            : ''
+        }
+      </section>
+    `;
+  }
+
+  function renderToolbarHtml() {
+    return `
+      <div class="reader-toolbar-wrap no-print">
+        <div id="reader-toolbar" class="reader-toolbar" role="toolbar" focusgroup="toolbar wrap" aria-label="教材與簡報控制列">
+          <div role="group" aria-label="模式切換" class="toolbar-group">
+            <button type="button" class="pill-btn" data-action="mode-book" aria-pressed="${state.mode === 'book' ? 'true' : 'false'}">📖 教材閱讀</button>
+            <button type="button" class="pill-btn" data-action="mode-slide" aria-pressed="${state.mode === 'slide' ? 'true' : 'false'}">📽️ 簡報展示</button>
+          </div>
+          <span role="separator" aria-orientation="vertical" class="toolbar-separator"></span>
+          <div role="group" aria-label="簡報輔助" class="toolbar-group">
+            <button type="button" class="tool-btn" data-action="open-overview" title="開啟章節總覽網格 (G)">🗂️ 總覽</button>
+            <button type="button" class="tool-btn" data-action="toggle-notes" aria-pressed="${state.notesOpen ? 'true' : 'false'}" title="顯示或隱藏講者備忘錄 (N)">🗒️ 講稿</button>
+            <button type="button" class="tool-btn" data-action="open-glossary" title="開啟核心專有名詞庫 (D)">📚 詞彙</button>
+          </div>
+          <span role="separator" aria-orientation="vertical" class="toolbar-separator"></span>
+          <div role="group" aria-label="閱讀外觀與輸出" class="toolbar-group">
+            <button type="button" class="tool-btn" data-action="font-down" aria-label="縮小字體" title="縮小字體">A-</button>
+            <button type="button" class="tool-btn" data-action="font-up" aria-label="放大字體" title="放大字體">A+</button>
+            <button type="button" class="tool-btn" data-action="cycle-theme" title="切換閱讀主題 (T)">🎨 ${escapeHtml(THEME_LABELS[state.theme])}</button>
+            <button type="button" class="tool-btn" data-action="open-print" title="列印教材或簡報講義 (P)">🖨️ 列印</button>
+            <button type="button" class="tool-btn" data-action="open-shortcuts" aria-label="鍵盤快捷鍵說明" title="快捷鍵說明 (?)">⌨️</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderBookModeHtml(progress) {
+    const currentUnitId = state.unitIds[state.currentIndex];
+    const tocHtml = `
+      <aside class="toc-sidebar" aria-label="教材目錄">
+        <div class="toc-heading">
+          <span>📑 章節目錄</span>
+          <span style="font-size:0.8rem;color:var(--accent-primary);">${progress.completedCount}/${progress.totalUnits}</span>
+        </div>
+        <ul class="toc-list">
+          ${normalized.units
+            .map((unit, idx) => {
+              const isCurrent = unit.id === currentUnitId;
+              const isDone = state.completedUnitIds.includes(unit.id);
+              return `
+                <li>
+                  <button type="button"
+                    class="toc-item-btn ${isCurrent ? 'is-current' : ''}"
+                    data-go-unit="${idx}">
+                    <span class="toc-item-num">${String(idx + 1).padStart(2, '0')}</span>
+                    <span>${escapeHtml(unit.title)}</span>
+                    ${isDone ? '<span class="toc-item-check" aria-label="已閱讀">✓</span>' : ''}
+                  </button>
+                </li>
+              `;
+            })
+            .join('')}
+        </ul>
+      </aside>
+    `;
+
+    const coverHtml = `
+      <section class="book-cover-card" aria-labelledby="book-cover-title">
+        <div class="unit-kicker-row">
+          <div class="unit-badge-group">
+            <span class="unit-num-pill">${escapeHtml(normalized.category)}</span>
+            <span class="unit-tag-pill">👥 ${escapeHtml(normalized.audience)}</span>
+            <span class="unit-tag-pill">⏱️ 約 ${normalized.estimatedMinutes} 分鐘</span>
+          </div>
+          <span class="unit-tag-pill">📊 進度 ${progress.percentage}%${progress.totalQuizzes > 0 ? `・測驗 ${progress.quizCorrectCount}/${progress.totalQuizzes}` : ''}</span>
+        </div>
+        <h2 id="book-cover-title" style="font-family:var(--font-display);margin-bottom:0.35rem;">${escapeHtml(normalized.title)}</h2>
+        ${normalized.subtitle ? `<p style="margin:0;color:var(--ink-secondary);font-weight:700;">${escapeHtml(normalized.subtitle)}</p>` : ''}
+        ${
+          normalized.learningObjectives.length > 0
+            ? `<div style="margin-top:0.85rem;">
+                 <strong>🎯 本教材學習目標：</strong>
+                 <ul class="book-objectives-list">
+                   ${normalized.learningObjectives.map((obj) => `<li>${escapeHtml(obj)}</li>`).join('')}
+                 </ul>
+               </div>`
+            : ''
+        }
+      </section>
+    `;
+
+    const unitsHtml = normalized.units
+      .map((unit, idx) => {
+        const isCurrent = idx === state.currentIndex;
+        const isDone = state.completedUnitIds.includes(unit.id);
+        const calloutType = unit.callout?.type || 'tip';
+        return `
+          <article id="unit-${escapeHtml(unit.id)}" class="unit-article ${isCurrent ? 'is-current' : ''}" data-unit-index="${idx}">
+            <div class="unit-kicker-row">
+              <div class="unit-badge-group">
+                <span class="unit-num-pill">單元 ${idx + 1} / ${normalized.units.length}</span>
+                ${unit.tag ? `<span class="unit-tag-pill">${escapeHtml(unit.tag)}</span>` : ''}
+                <span class="unit-tag-pill">${escapeHtml(unit.title)}</span>
+              </div>
+              <button type="button" class="tool-btn" data-present-unit="${idx}" title="直接以簡報模式投影本單元">📽️ 從此頁簡報</button>
+            </div>
+
+            <h3 class="unit-assertion">${renderGlossaryTokens(unit.assertion, glossaryMap)}</h3>
+
+            ${renderVisualBlock(unit)}
+
+            <div class="unit-prose">
+              ${unit.bookProse.map((p) => `<p>${renderGlossaryTokens(p, glossaryMap)}</p>`).join('')}
+            </div>
+
+            ${
+              unit.callout && unit.callout.text
+                ? `<aside class="unit-callout unit-callout--${escapeHtml(calloutType)}">
+                     <div class="unit-callout-title">${escapeHtml(unit.callout.title || '重點提醒')}</div>
+                     <div>${renderGlossaryTokens(unit.callout.text, glossaryMap)}</div>
+                   </aside>`
+                : ''
+            }
+
+            ${renderQuizBlock(unit)}
+
+            ${
+              state.notesOpen && unit.speakerNotes
+                ? `<aside class="inline-notes-box">
+                     <strong>🗒️ 講者備忘錄（建議約 ${unit.durationSec} 秒）：</strong>
+                     ${escapeHtml(unit.speakerNotes)}
+                   </aside>`
+                : ''
+            }
+
+            <div class="unit-actions-footer">
+              <span style="font-size:0.84rem;color:var(--ink-secondary);font-weight:700;">
+                ${isDone ? '✅ 已記錄閱讀進度' : '⏳ 尚未標記完成'}
+              </span>
+              <button type="button" class="pill-btn ${isDone ? 'is-active' : ''}" data-mark-done="${escapeHtml(unit.id)}">
+                ${isDone ? '✓ 已讀完本單元' : '標記本單元已讀'}
+              </button>
+            </div>
+          </article>
+        `;
+      })
+      .join('');
+
+    return `
+      <div class="book-layout">
+        ${tocHtml}
+        <div class="book-reading-column">
+          ${coverHtml}
+          ${unitsHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderSlideModeHtml(progress) {
+    const total = normalized.units.length;
+    const unit = normalized.units[state.currentIndex];
+    if (!unit) return '<p>尚無投影片單元。</p>';
+    const isFirst = state.currentIndex <= 0;
+    const isLast = state.currentIndex >= total - 1;
+    const hasVisual = Boolean(
+      (unit.visual && unit.visual.svg) ||
+      unit.widgetId ||
+      unit.comparison ||
+      (Array.isArray(unit.glossaryFocusIds) && unit.glossaryFocusIds.length > 0) ||
+      unit.quiz
+    );
+
+    return `
+      <div class="slide-workspace">
+        <section class="slide-stage" aria-live="polite" aria-label="簡報展示舞台">
+          <div>
+            <div class="slide-header-meta">
+              <span>${escapeHtml(normalized.title)}・${escapeHtml(unit.tag || unit.title)}</span>
+              <span>投影片 ${state.currentIndex + 1} / ${total}</span>
+            </div>
+            <h2 class="slide-assertion">${renderGlossaryTokens(unit.assertion, glossaryMap)}</h2>
+          </div>
+
+          <div class="slide-body-grid ${!hasVisual || unit.slidePoints.length === 0 ? 'is-single' : ''}">
+            ${
+              hasVisual
+                ? `<div>
+                     ${renderVisualBlock(unit, { compact: true })}
+                     ${unit.quiz ? renderQuizBlock(unit) : ''}
+                   </div>`
+                : ''
+            }
+            ${
+              unit.slidePoints.length > 0
+                ? `<div class="slide-points-panel">
+                     <ul class="slide-points-list">
+                       ${unit.slidePoints.map((pt) => `<li>${renderGlossaryTokens(pt, glossaryMap)}</li>`).join('')}
+                     </ul>
+                   </div>`
+                : ''
+            }
+          </div>
+
+          <div class="slide-header-meta" style="border-top:1px solid var(--border-soft);padding-top:0.55rem;">
+            <span>💡 提示：方向鍵 ← / → 換頁・G 總覽・N 講者備忘錄・B 返回教材閱讀</span>
+            <span>進度 ${progress.percentage}%</span>
+          </div>
+        </section>
+
+        <div class="slide-rail" role="toolbar" focusgroup="toolbar wrap" aria-label="簡報換頁控制列">
+          <button type="button" class="pill-btn" data-action="prev-slide" aria-disabled="${isFirst ? 'true' : 'false'}">← 上一頁</button>
+          <span class="slide-counter">第 ${state.currentIndex + 1} / ${total} 頁（${escapeHtml(unit.title)}）</span>
+          <button type="button" class="pill-btn" data-action="next-slide" aria-disabled="${isLast ? 'true' : 'false'}">下一頁 →</button>
+        </div>
+
+        ${
+          state.notesOpen
+            ? `<aside class="notes-drawer" aria-label="講者備忘錄與計時器">
+                 <div class="notes-drawer-header">
+                   <strong>🗒️ 講者備忘錄（本頁建議 ${unit.durationSec} 秒）</strong>
+                   <div class="timer-cluster">
+                     <span id="presenter-clock-display">⏱️ ${formatClock(timerSeconds)}</span>
+                     <button type="button" class="tool-btn" data-action="timer-toggle">${timerRunning ? '⏸ 暫停' : '▶ 計時'}</button>
+                     <button type="button" class="tool-btn" data-action="timer-reset">↺ 歸零</button>
+                   </div>
+                 </div>
+                 <p style="margin:0;line-height:1.7;">${escapeHtml(unit.speakerNotes || '本頁尚無補充講稿。')}</p>
+               </aside>`
+            : ''
+        }
+      </div>
+    `;
+  }
+
+  function renderPrintHandoutHtml() {
+    return `
+      <div class="print-handout-container" aria-hidden="true">
+        <header style="border-bottom:2px solid #1b365d;padding-bottom:0.6rem;margin-bottom:1rem;">
+          <h1 style="margin:0;font-size:1.5rem;">${escapeHtml(normalized.title)} — 簡報與講者講義</h1>
+          <p style="margin:0.25rem 0 0;color:#475569;">${escapeHtml(normalized.subtitle)}</p>
+        </header>
+        ${normalized.units
+          .map(
+            (unit, idx) => `
+          <section class="handout-sheet">
+            <div style="font-size:0.82rem;color:#475569;font-weight:700;">第 ${idx + 1} / ${normalized.units.length} 頁・${escapeHtml(unit.tag || unit.title)}</div>
+            <h2 style="margin:0.25rem 0 0.7rem;font-size:1.22rem;">${escapeHtml(unit.assertion)}</h2>
+            ${unit.visual && unit.visual.svg ? `<div>${unit.visual.svg}</div>` : ''}
+            ${
+              unit.slidePoints.length > 0
+                ? `<ul style="margin:0.5rem 0;">${unit.slidePoints.map((pt) => `<li>${escapeHtml(pt)}</li>`).join('')}</ul>`
+                : ''
+            }
+            <div class="handout-notes">
+              <strong>🗒️ 講者筆記與補充說明（約 ${unit.durationSec} 秒）：</strong>
+              <div>${escapeHtml(unit.speakerNotes || '')}</div>
+            </div>
+          </section>
+        `
+          )
+          .join('')}
+      </div>
+    `;
+  }
+
+  function hydrateWidgets() {
+    const hosts = Array.from(appRoot.querySelectorAll('[data-widget-id]'));
+    for (const host of hosts) {
+      const widgetId = host.getAttribute('data-widget-id');
+      const fn = widgets[widgetId];
+      if (typeof fn !== 'function') {
+        host.innerHTML = `<p style="margin:0;color:var(--ink-secondary);">互動元件 <code>${escapeHtml(widgetId)}</code> 尚未載入。</p>`;
+        continue;
+      }
+      fn(host, {
+        state: state.widgetStates[widgetId] || {},
+        getState: () => state.widgetStates[widgetId] || {},
+        setState: (patch, { rerender = false } = {}) => {
+          state = transitionViewerState(state, { type: 'SET_WIDGET_STATE', widgetId, patch });
+          persistState();
+          if (rerender) render();
+        },
+        mode: state.mode,
+        announce,
+      });
+    }
+  }
+
+  function populateOverviewDialog() {
+    const body = document.getElementById('overview-dialog-body');
+    if (!body) return;
+    body.innerHTML = `
+      <div class="overview-grid">
+        ${normalized.units
+          .map((unit, idx) => {
+            const isCurrent = idx === state.currentIndex;
+            const isDone = state.completedUnitIds.includes(unit.id);
+            return `
+              <button type="button" class="overview-card ${isCurrent ? 'is-current' : ''}" data-overview-unit="${idx}">
+                <div style="display:flex;justify-content:space-between;width:100%;font-size:0.78rem;font-weight:800;color:var(--ink-secondary);">
+                  <span>#${idx + 1}・${escapeHtml(unit.tag || unit.title)}</span>
+                  <span>${isDone ? '✓' : ''}</span>
+                </div>
+                <strong style="font-size:0.95rem;line-height:1.4;">${escapeHtml(unit.assertion)}</strong>
+              </button>
+            `;
+          })
+          .join('')}
+      </div>
+    `;
+  }
+
+  function populateGlossaryDialog(focusTermId = null) {
+    const body = document.getElementById('glossary-dialog-body');
+    if (!body) return;
+    body.innerHTML = `
+      <div class="glossary-grid">
+        ${normalized.glossary
+          .map((item) => {
+            const isFocused = focusTermId && item.id === focusTermId;
+            return `
+              <article class="glossary-card ${isFocused ? 'is-focused' : ''}" id="glossary-entry-${escapeHtml(item.id)}">
+                <div class="glossary-term-title">${escapeHtml(item.term)} <small style="color:var(--ink-secondary);">(${escapeHtml(item.en || '')})</small></div>
+                <p style="margin:0 0 0.35rem;">${escapeHtml(item.definition)}</p>
+                ${item.analogy ? `<p style="margin:0;font-size:0.9rem;color:var(--ink-secondary);">💡 <strong>生活比喻：</strong>${escapeHtml(item.analogy)}</p>` : ''}
+              </article>
+            `;
+          })
+          .join('')}
+      </div>
+    `;
+  }
+
+  function openDialogById(id) {
+    const dlg = document.getElementById(id);
+    if (!dlg) return;
+    if (typeof dlg.showModal === 'function') {
+      if (!dlg.open) dlg.showModal();
+    } else {
+      dlg.setAttribute('open', '');
+    }
+  }
+
+  function closeDialogById(id) {
+    const dlg = document.getElementById(id);
+    if (dlg && dlg.open) {
+      closeTopLayer(dlg);
+    }
+  }
+
+  function render() {
+    applyThemeAndScale();
+    const progress = computeProgress(state);
+
+    appRoot.innerHTML = `
+      ${renderToolbarHtml()}
+      <div class="top-progress-bar no-print" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${progress.percentage}" aria-label="閱讀進度">
+        <div class="top-progress-fill" style="width:${progress.percentage}%"></div>
+      </div>
+      <div style="margin-top:0.9rem;">
+        ${state.mode === 'slide' ? renderSlideModeHtml(progress) : renderBookModeHtml(progress)}
+      </div>
+      ${renderPrintHandoutHtml()}
+    `;
+
+    setupAccessibleToolbars(appRoot);
+    hydrateWidgets();
+    persistState();
+  }
+
+  function goToUnitWithFeedback(nextIndex, { scrollInBook = true } = {}) {
+    const prevIdx = state.currentIndex;
+    const direction = nextIndex >= prevIdx ? 'forward' : 'backward';
+    const apply = () => {
+      state = transitionViewerState(state, { type: 'GO_TO_UNIT', index: nextIndex });
+      render();
+      const unit = normalized.units[state.currentIndex];
+      if (unit) {
+        announce(`已切換至單元 ${state.currentIndex + 1}：${unit.title}`);
+        if (state.mode === 'book' && scrollInBook) {
+          document.getElementById(`unit-${unit.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    };
+
+    if (state.mode === 'slide') {
+      navigateWithTransition(apply, direction);
+    } else {
+      apply();
+    }
+  }
+
+  function handleAction(action) {
+    switch (action) {
+      case 'mode-book':
+        state = transitionViewerState(state, { type: 'SET_MODE', mode: 'book' });
+        render();
+        announce('已切換為教材閱讀模式');
+        break;
+      case 'mode-slide':
+        state = transitionViewerState(state, { type: 'SET_MODE', mode: 'slide' });
+        render();
+        announce('已切換為簡報展示模式');
+        break;
+      case 'prev-slide':
+        if (state.currentIndex > 0) goToUnitWithFeedback(state.currentIndex - 1);
+        break;
+      case 'next-slide':
+        if (state.currentIndex < normalized.units.length - 1) goToUnitWithFeedback(state.currentIndex + 1);
+        break;
+      case 'open-overview':
+        populateOverviewDialog();
+        openDialogById('overview-dialog');
+        break;
+      case 'toggle-notes':
+        state = transitionViewerState(state, { type: 'TOGGLE_NOTES' });
+        render();
+        announce(state.notesOpen ? '已開啟講者備忘錄' : '已隱藏講者備忘錄');
+        break;
+      case 'open-glossary':
+        populateGlossaryDialog(null);
+        openDialogById('glossary-dialog');
+        break;
+      case 'font-down':
+        state = transitionViewerState(state, { type: 'SET_FONT_SCALE', scale: state.fontScale - 0.08 });
+        render();
+        announce(`字體縮放為 ${Math.round(state.fontScale * 100)}%`);
+        break;
+      case 'font-up':
+        state = transitionViewerState(state, { type: 'SET_FONT_SCALE', scale: state.fontScale + 0.08 });
+        render();
+        announce(`字體縮放為 ${Math.round(state.fontScale * 100)}%`);
+        break;
+      case 'cycle-theme':
+        state = transitionViewerState(state, { type: 'CYCLE_THEME' });
+        render();
+        announce(`已切換閱讀主題：${THEME_LABELS[state.theme]}`);
+        break;
+      case 'open-print':
+        openDialogById('print-dialog');
+        break;
+      case 'open-shortcuts':
+        openDialogById('shortcuts-dialog');
+        break;
+      case 'timer-toggle': {
+        timerRunning = !timerRunning;
+        if (timerRunning) {
+          timerIntervalId = window.setInterval(() => {
+            timerSeconds += 1;
+            const clockEl = document.getElementById('presenter-clock-display');
+            if (clockEl) clockEl.textContent = `⏱️ ${formatClock(timerSeconds)}`;
+          }, 1000);
+        } else if (timerIntervalId) {
+          clearInterval(timerIntervalId);
+          timerIntervalId = null;
+        }
+        render();
+        break;
+      }
+      case 'timer-reset':
+        timerRunning = false;
+        timerSeconds = 0;
+        if (timerIntervalId) {
+          clearInterval(timerIntervalId);
+          timerIntervalId = null;
+        }
+        render();
+        break;
+      default:
+        break;
+    }
+  }
+
+  // Event delegation on appRoot
+  appRoot.addEventListener('click', (event) => {
+    const actionBtn = event.target.closest('[data-action]');
+    if (actionBtn) {
+      if (actionBtn.getAttribute('aria-disabled') === 'true') return;
+      handleAction(actionBtn.getAttribute('data-action'));
+      return;
+    }
+
+    const goBtn = event.target.closest('[data-go-unit]');
+    if (goBtn) {
+      goToUnitWithFeedback(Number(goBtn.getAttribute('data-go-unit')));
+      return;
+    }
+
+    const presentBtn = event.target.closest('[data-present-unit]');
+    if (presentBtn) {
+      const idx = Number(presentBtn.getAttribute('data-present-unit'));
+      state = transitionViewerState(state, { type: 'GO_TO_UNIT', index: idx });
+      state = transitionViewerState(state, { type: 'SET_MODE', mode: 'slide' });
+      render();
+      announce(`已切換為簡報模式，第 ${idx + 1} 頁`);
+      return;
+    }
+
+    const markBtn = event.target.closest('[data-mark-done]');
+    if (markBtn) {
+      const unitId = markBtn.getAttribute('data-mark-done');
+      state = transitionViewerState(state, { type: 'MARK_COMPLETED', unitId });
+      render();
+      announce('已標記本單元為完成閱讀');
+      return;
+    }
+
+    const quizBtn = event.target.closest('[data-quiz-unit]');
+    if (quizBtn) {
+      const unitId = quizBtn.getAttribute('data-quiz-unit');
+      const optionIndex = Number(quizBtn.getAttribute('data-quiz-option'));
+      const unit = normalized.units.find((u) => u.id === unitId);
+      if (!unit?.quiz) return;
+      const isCorrect = optionIndex === unit.quiz.correctIndex;
+      state = transitionViewerState(state, {
+        type: 'ANSWER_QUIZ',
+        unitId,
+        optionIndex,
+        isCorrect,
+      });
+      render();
+      announce(isCorrect ? '隨堂測驗答對了！' : '已顯示觀念診斷說明');
+      return;
+    }
+
+    const chip = event.target.closest('[data-glossary-term]');
+    if (chip) {
+      const termId = chip.getAttribute('data-glossary-term');
+      populateGlossaryDialog(termId);
+      openDialogById('glossary-dialog');
+      requestAnimationFrame(() => {
+        document.getElementById(`glossary-entry-${termId}`)?.scrollIntoView({ block: 'nearest' });
+      });
+    }
+  });
+
+  // Dialog click handlers
+  document.getElementById('overview-dialog')?.addEventListener('click', (event) => {
+    const card = event.target.closest('[data-overview-unit]');
+    if (!card) return;
+    const idx = Number(card.getAttribute('data-overview-unit'));
+    closeDialogById('overview-dialog');
+    goToUnitWithFeedback(idx);
+  });
+
+  document.getElementById('print-dialog')?.addEventListener('click', (event) => {
+    const printBtn = event.target.closest('[data-print-choice]');
+    if (!printBtn) return;
+    const mode = printBtn.getAttribute('data-print-choice');
+    document.body.setAttribute('data-print-mode', mode === 'handout' ? 'handout' : 'book');
+    closeDialogById('print-dialog');
+    setTimeout(() => {
+      window.print();
+    }, 80);
+  });
+
+  // Touch swipe navigation on Slide Stage (safely ignores interactive controls)
+  let swipeStartX = null;
+  let swipeStartY = null;
+  appRoot.addEventListener('pointerdown', (event) => {
+    if (state.mode !== 'slide') return;
+    if (event.target.closest('button, input, select, textarea, a, .widget-host')) return;
+    swipeStartX = event.clientX;
+    swipeStartY = event.clientY;
+  });
+  appRoot.addEventListener('pointerup', (event) => {
+    if (state.mode !== 'slide' || swipeStartX === null || swipeStartY === null) return;
+    const dx = event.clientX - swipeStartX;
+    const dy = event.clientY - swipeStartY;
+    swipeStartX = null;
+    swipeStartY = null;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+      if (dx < 0 && state.currentIndex < normalized.units.length - 1) {
+        goToUnitWithFeedback(state.currentIndex + 1);
+      } else if (dx > 0 && state.currentIndex > 0) {
+        goToUnitWithFeedback(state.currentIndex - 1);
+      }
+    }
+  });
+
+  // Global Keyboard Shortcuts
+  document.addEventListener('keydown', (event) => {
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
+    const tag = document.activeElement?.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    if (document.querySelector('dialog[open]')) return;
+
+    const k = event.key.toLowerCase();
+    if (k === 'b') {
+      event.preventDefault();
+      handleAction(state.mode === 'slide' ? 'mode-book' : 'mode-slide');
+      return;
+    }
+    if (k === 'g') {
+      event.preventDefault();
+      handleAction('open-overview');
+      return;
+    }
+    if (k === 'n') {
+      event.preventDefault();
+      handleAction('toggle-notes');
+      return;
+    }
+    if (k === 'd') {
+      event.preventDefault();
+      handleAction('open-glossary');
+      return;
+    }
+    if (k === 't') {
+      event.preventDefault();
+      handleAction('cycle-theme');
+      return;
+    }
+    if (k === 'p') {
+      event.preventDefault();
+      handleAction('open-print');
+      return;
+    }
+    if (event.key === '?') {
+      event.preventDefault();
+      handleAction('open-shortcuts');
+      return;
+    }
+
+    if (state.mode === 'slide') {
+      if (event.key === 'ArrowRight' || event.key === 'PageDown' || (event.key === ' ' && tag !== 'BUTTON' && tag !== 'A')) {
+        if (!document.activeElement?.closest('[role="toolbar"]')) {
+          event.preventDefault();
+          handleAction('next-slide');
+        }
+      } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+        if (!document.activeElement?.closest('[role="toolbar"]')) {
+          event.preventDefault();
+          handleAction('prev-slide');
+        }
+      } else if (event.key === 'Home') {
+        if (!document.activeElement?.closest('[role="toolbar"]')) {
+          event.preventDefault();
+          goToUnitWithFeedback(0);
+        }
+      } else if (event.key === 'End') {
+        if (!document.activeElement?.closest('[role="toolbar"]')) {
+          event.preventDefault();
+          goToUnitWithFeedback(normalized.units.length - 1);
+        }
+      }
+    }
+  });
+
+  setupAccessibleDialogs('dialog.lab-dialog');
+  render();
+
+  return {
+    getState: () => state,
+    destroy: () => {
+      if (timerIntervalId) clearInterval(timerIntervalId);
+    },
+  };
+}
+
+return { mountBookViewer };
+})();
+
+// === Module: ./src/data/content.js ===
+const __mod_content = (() => {
+/**
+ * Structured Single-Source Content for `cognitive-design-guide`.
+ * Drives Book Mode, Slide Mode (Assertion-Evidence), Glossary Popups, and Print Handouts.
+ */
+const BOOK_DATA = {
+  id: 'cognitive-design-guide',
+  title: '讓複雜變簡單：易懂教學教材與簡報設計指南',
+  subtitle: '認知負荷理論 × Mayer 多媒體 12 原則 × 斷言-視覺證據實戰',
+  category: '教學設計・簡報表達',
+  audience: '教師・講師・教材製作人',
+  level: '實戰入門',
+  estimatedMinutes: 8,
+  learningObjectives: [
+    '分辨學習過程中的「本質負荷」與應該砍除的「外在負荷」，主動替學習者釋放工作記憶。',
+    '活用名詞預習（Pre-training）與空間緊鄰（Spatial Contiguity）設計零阻力的圖解教材。',
+    '將塞滿條列文字的傳統簡報，改寫成一目了然的「斷言-視覺證據」簡報。',
+    '運用單一資料來源同時驅動深度閱讀、現場簡報投影與附帶講稿的講義列印。',
+  ],
+  glossary: [
+    {
+      id: 'working-memory',
+      term: '工作記憶',
+      en: 'Working Memory',
+      definition: '大腦當下用來暫存與處理新資訊的有限空間，一次大約只能同時握住 3 到 5 個資訊組塊。',
+      analogy: '就像書桌的「桌面大小」：一次攤開太多本書，書就會掉到地上，什麼也讀不進去。',
+    },
+    {
+      id: 'cognitive-load',
+      term: '認知負荷',
+      en: 'Cognitive Load',
+      definition: '學習過程中對工作記憶產生的總負擔，分成主題本身的本質負荷、排版干擾的外在負荷與深化理解的增生負荷。',
+      analogy: '就像登山背包重量：課本（本質負荷）已經夠重了，千萬別再往裡面塞無關的石頭（外在負荷）。',
+    },
+    {
+      id: 'assertion-evidence',
+      term: '斷言-視覺證據設計',
+      en: 'Assertion-Evidence Approach',
+      definition: '一種以「一句完整結論句」作為簡報主標題，並以「圖表、圖解或互動模擬」作為主體證據的簡報架構。',
+      analogy: '像新聞頭條配現場照片：看一眼標題就懂結論，看圖表立刻相信，不用自己從文字堆裡猜重點。',
+    },
+    {
+      id: 'spatial-contiguity',
+      term: '空間緊鄰原則',
+      en: 'Spatial Contiguity Principle',
+      definition: '把說明文字直接放在對應圖解或元件旁邊，避免學習者的眼睛在圖形與頁尾圖例之間反覆跳躍。',
+      analogy: '就像捷運車門上直接貼著站名路線圖，不用乘客自己去車廂角落翻對照表。',
+    },
+    {
+      id: 'segmenting',
+      term: '分段節流原則',
+      en: 'Segmenting Principle',
+      definition: '將龐雜連續的知識拆成一個個短小、可由學習者自行決定何時按「下一步」的小單元。',
+      analogy: '像把大塊牛排切成像骰子一樣好入口的小塊，而不是要求一口氣整塊吞下。',
+    },
+    {
+      id: 'pre-training',
+      term: '名詞預習原則',
+      en: 'Pre-training Principle',
+      definition: '在講解複雜運作流程前，先讓學習者認識關鍵零件的名稱、外觀與角色，降低中途邊聽邊查的負擔。',
+      analogy: '像拼樂高前先把特殊零件分類擺好、先認得名稱，照說明書組裝就會順暢十倍。',
+    },
+  ],
+  units: [
+    {
+      id: 'unit-1-why-clarity-matters',
+      title: '為何簡報總是記不住',
+      tag: '第 1 站・核心問題',
+      durationSec: 55,
+      assertion: '聽眾記不住重點往往不是內容太難，而是排版把工作記憶塞爆了',
+      slidePoints: [
+        '大腦「桌面」一次只能握住 3–5 個資訊組塊',
+        '同時讀滿屏文字又聽你講話，會造成雙重衝突',
+        '好的設計不是做加法裝飾，而是主動幫大腦清出空間',
+      ],
+      bookProse: [
+        '你有沒有過這樣的經驗？講台上投影片寫得密密麻麻、老師也講得很賣力，但下課五分鐘後，腦袋卻幾乎一片空白。這通常不是因為你不夠專心，而是人類大腦的 [[working-memory]] 容量本來就非常有限。',
+        '當畫面同時塞滿無關的花邊、又長又密的條列文字，學習者光是「尋找哪裡是重點」就耗盡力氣，根本沒有空間消化真正想學的觀念。這本指南將帶你用四個步驟，把複雜知識改造成讀得懂、講得順的教材與簡報。',
+      ],
+      visual: {
+        caption: '從認知爆表到清晰理解：易懂教材的四步驟改造路徑',
+        svg: `<svg viewBox="0 0 640 165" role="img" aria-label="四步驟設計路徑：認識詞彙、移除雜訊、斷言加視覺證據、雙模交付">
+          <rect x="8" y="18" width="136" height="126" rx="12" fill="#e3eaf5" stroke="#1b365d" stroke-width="2" />
+          <text x="76" y="46" text-anchor="middle" font-size="13" font-weight="800" fill="#1b365d">1. 名詞預習</text>
+          <text x="76" y="72" text-anchor="middle" font-size="11" fill="#1e293b">先認識零件名稱</text>
+          <text x="76" y="92" text-anchor="middle" font-size="11" fill="#1e293b">與生活比喻</text>
+          <text x="76" y="124" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1b365d">Pre-training</text>
+
+          <path d="M148 80 L166 80" stroke="#1b365d" stroke-width="2.5" marker-end="url(#arrow1)" />
+          <defs><marker id="arrow1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#1b365d"/></marker></defs>
+
+          <rect x="170" y="18" width="136" height="126" rx="12" fill="#fef3c7" stroke="#b45309" stroke-width="2" />
+          <text x="238" y="46" text-anchor="middle" font-size="13" font-weight="800" fill="#b45309">2. 減輕外在負荷</text>
+          <text x="238" y="72" text-anchor="middle" font-size="11" fill="#1e293b">砍掉無關裝飾</text>
+          <text x="238" y="92" text-anchor="middle" font-size="11" fill="#1e293b">把講稿移出畫面</text>
+          <text x="238" y="124" text-anchor="middle" font-size="10.5" font-weight="700" fill="#b45309">Coherence</text>
+
+          <path d="M310 80 L328 80" stroke="#1b365d" stroke-width="2.5" marker-end="url(#arrow1)" />
+
+          <rect x="332" y="18" width="136" height="126" rx="12" fill="#dcfce7" stroke="#15803d" stroke-width="2" />
+          <text x="400" y="46" text-anchor="middle" font-size="13" font-weight="800" fill="#15803d">3. 斷言＋圖解</text>
+          <text x="400" y="72" text-anchor="middle" font-size="11" fill="#1e293b">一句結論當主標</text>
+          <text x="400" y="92" text-anchor="middle" font-size="11" fill="#1e293b">圖表緊鄰標註</text>
+          <text x="400" y="124" text-anchor="middle" font-size="10.5" font-weight="700" fill="#15803d">Assertion-Evidence</text>
+
+          <path d="M472 80 L490 80" stroke="#1b365d" stroke-width="2.5" marker-end="url(#arrow1)" />
+
+          <rect x="494" y="18" width="138" height="126" rx="12" fill="#f1f5f9" stroke="#334155" stroke-width="2" />
+          <text x="563" y="46" text-anchor="middle" font-size="13" font-weight="800" fill="#1e293b">4. 雙模靈活切換</text>
+          <text x="563" y="72" text-anchor="middle" font-size="11" fill="#1e293b">閱讀深讀／簡報投影</text>
+          <text x="563" y="92" text-anchor="middle" font-size="11" fill="#1e293b">附筆記講義列印</text>
+          <text x="563" y="124" text-anchor="middle" font-size="10.5" font-weight="700" fill="#334155">Fluid Dual-Mode</text>
+        </svg>`,
+      },
+      speakerNotes:
+        '開場先請聽眾回想「上週看過最痛苦的一份簡報」。點出核心觀點：問題不在聽眾不認真，而是人的工作記憶只有 3–5 個槽位。按下右上方「簡報／教材」按鈕可以體驗同一份內容的兩種樣貌。',
+    },
+    {
+      id: 'unit-2-pretraining-glossary',
+      title: '先認得詞彙再學流程',
+      tag: '第 2 站・名詞預習',
+      durationSec: 65,
+      assertion: '先用生活比喻認識核心詞彙，能讓後續複雜原理的理解速度翻倍',
+      slidePoints: [
+        '這是 Mayer「名詞預習原則（Pre-training）」的核心做法',
+        '正文遇到橘色詞彙標籤，隨時一點就能展開白話解釋',
+        '先記住「工作記憶＝書桌大小」，後面就能秒懂所有設計訣竅',
+      ],
+      bookProse: [
+        '在開始說明設計原則之前，我們先應用 [[pre-training]]：先把全書會反覆出現的 6 個關鍵名詞擺上桌面。就像剛拿到一盒新桌遊，先看懂四張角色卡長什麼樣子，等一下讀遊戲規則時就不用邊讀邊翻說明書了。',
+        '在本網站中，任何帶有暖橘底色的詞彙標籤（例如 [[cognitive-load]] 或 [[spatial-contiguity]]）都可以直接點擊，立刻跳出白話定義與生活比喻，讓你隨時補充前備知識而不會迷路。',
+      ],
+      glossaryFocusIds: [
+        'working-memory',
+        'cognitive-load',
+        'assertion-evidence',
+        'spatial-contiguity',
+        'segmenting',
+        'pre-training',
+      ],
+      speakerNotes:
+        '這頁展示「名詞預習原則」：花一分鐘先帶大家看過這 6 個生活比喻，特別強調「工作記憶＝書桌大小」與「認知負荷＝背包重量」，接下來所有設計方法都會扣回這兩個比喻。',
+    },
+    {
+      id: 'unit-3-cognitive-load-lab',
+      title: '把書桌留給重要觀念',
+      tag: '第 3 站・認知負荷模擬',
+      durationSec: 90,
+      assertion: '當我們主動砍掉外在干擾，大腦才有餘裕消化高難度知識',
+      slidePoints: [
+        '主題本身的難度是「本質負荷」，通常無法直接變少',
+        '雜亂背景、重複文字牆是可被消除的「外在負荷」',
+        '親自撥動下方模擬器的開關，觀察工作記憶如何騰出空間',
+      ],
+      bookProse: [
+        '在 [[cognitive-load]] 理論裡，大腦面對的總負擔主要有兩部分：主題原本的複雜度叫做「本質負荷」，而因為簡報太亂、字太多造成的冤枉負擔叫做「外在負荷」。既然主題的本質難度是固定的，設計師唯一能做的，就是無情地削減外在負荷。',
+        '試著操作下方的互動模擬器！把主題難度調到「中等」或「高難度」，再逐一打開減負開關。即使你現在切到「📽️ 簡報展示模式」，剛剛設定的模擬數值也會完整保留下來喔！',
+      ],
+      widgetId: 'cognitive-load-sim',
+      quiz: {
+        question: '當你要教一個本身就很複雜的主題（本質負荷很高）時，下列哪種做法最能避免學生工作記憶過載？',
+        options: [
+          {
+            text: '加入更多活潑的動畫特效與幽默梗圖來提振精神',
+            explanation: '看似有趣但與主題無關的圖片與特效屬於「誘惑細節」，會直接增加外在認知負荷，反而讓大腦更容易爆表。',
+          },
+          {
+            text: '把流程拆成小步驟（分段），並把多餘裝飾與重複段落移出畫面',
+            explanation: '正確！當本質負荷高時，必須靠分段節流與移除外在雜訊，才能騰出寶貴的工作記憶空間給核心概念。',
+          },
+          {
+            text: '把口頭講解的逐字稿全部貼在投影片上讓大家自己對照讀',
+            explanation: '把講稿與畫面文字雙重並列會觸發「冗餘效應」，視覺與聽覺互相搶資源，理解度反而下降。',
+          },
+        ],
+        correctIndex: 1,
+      },
+      speakerNotes:
+        '現場投影時請先讓「主題難度＝中等、四個開關全關」，指給聽眾看紅色的「工作記憶爆表」條。接著依序打開「移除裝飾」和「講稿移出畫面」，帶大家親眼看到綠色安全線以下的餘裕空間出現。',
+    },
+    {
+      id: 'unit-4-mayer-three-pillars',
+      title: 'Mayer 多媒體三大支柱',
+      tag: '第 4 站・理論地圖',
+      durationSec: 75,
+      assertion: 'Richard Mayer 的 12 項多媒體原則全都能歸納為「去噪、分段、促進連結」三大策略',
+      slidePoints: [
+        '第一支柱「減少外在干擾」：去裝飾、畫重點、別把講稿貼滿畫面',
+        '第二支柱「管理核心難度」：拆成短單元、先認名詞、圖配口語最省力',
+        '第三支柱「促進主動思考」：圖文結合＋像朋友聊天一樣的語氣',
+      ],
+      bookProse: [
+        '很多老師第一次聽到「多媒體學習 12 原則」會覺得背不完，其實只要記住它們共同服務的三個目的：第一是「清場」（砍掉與學習無關的干擾），第二是「控速」（用 [[segmenting]] 把難題切小口），第三是「搭橋」（用親切口吻與圖解幫助記憶）。',
+        '特別要注意的是語氣個人化原則：把「學習者應於系統輸入參數」改成「我們先試著調整一個開關」，這種自然的對話感能讓大腦自動切換成「正在與人交流」的專注狀態。',
+      ],
+      visual: {
+        caption: 'Richard Mayer 多媒體學習 12 原則三大策略總覽圖',
+        svg: `<svg viewBox="0 0 640 215" role="img" aria-label="Mayer三大策略圖：1 減少外在負荷、2 管理本質負荷、3 促進增生連結">
+          <rect x="12" y="14" width="196" height="186" rx="14" fill="#fee2e2" stroke="#b91c1c" stroke-width="2" />
+          <text x="110" y="42" text-anchor="middle" font-size="13.5" font-weight="800" fill="#b91c1c">支柱一：砍掉外在雜訊</text>
+          <text x="110" y="62" text-anchor="middle" font-size="10.5" fill="#7f1d1d">Stop Extraneous Processing</text>
+          <text x="28" y="92" font-size="11.5" font-weight="700" fill="#1e293b">1. 極簡去噪 Coherence</text>
+          <text x="28" y="114" font-size="11.5" font-weight="700" fill="#1e293b">2. 重點訊號 Signaling</text>
+          <text x="28" y="136" font-size="11.5" font-weight="700" fill="#1e293b">3. 不念稿件 Redundancy</text>
+          <text x="28" y="158" font-size="11.5" font-weight="700" fill="#1e293b">4. 圖文緊鄰 Spatial</text>
+          <text x="28" y="180" font-size="11.5" font-weight="700" fill="#1e293b">5. 影音同步 Temporal</text>
+
+          <rect x="222" y="14" width="196" height="186" rx="14" fill="#fef3c7" stroke="#b45309" stroke-width="2" />
+          <text x="320" y="42" text-anchor="middle" font-size="13.5" font-weight="800" fill="#b45309">支柱二：控管核心難度</text>
+          <text x="320" y="62" text-anchor="middle" font-size="10.5" fill="#78350f">Manage Essential Load</text>
+          <text x="238" y="98" font-size="11.5" font-weight="700" fill="#1e293b">6. 分段節流 Segmenting</text>
+          <text x="238" y="128" font-size="11.5" font-weight="700" fill="#1e293b">7. 名詞預習 Pre-training</text>
+          <text x="238" y="158" font-size="11.5" font-weight="700" fill="#1e293b">8. 雙通道口說 Modality</text>
+          <text x="238" y="182" font-size="10.5" fill="#78350f">↳ 把書面文字轉成圖＋口語</text>
+
+          <rect x="432" y="14" width="196" height="186" rx="14" fill="#dcfce7" stroke="#15803d" stroke-width="2" />
+          <text x="530" y="42" text-anchor="middle" font-size="13.5" font-weight="800" fill="#15803d">支柱三：促進深度連結</text>
+          <text x="530" y="62" text-anchor="middle" font-size="10.5" fill="#14532d">Foster Generative Learning</text>
+          <text x="448" y="96" font-size="11.5" font-weight="700" fill="#1e293b">9. 圖文雙碼 Multimedia</text>
+          <text x="448" y="122" font-size="11.5" font-weight="700" fill="#1e293b">10. 親切對話 Personalization</text>
+          <text x="448" y="148" font-size="11.5" font-weight="700" fill="#1e293b">11. 自然人聲 Voice</text>
+          <text x="448" y="174" font-size="11.5" font-weight="700" fill="#1e293b">12. 畫面留給內容 Image</text>
+        </svg>`,
+      },
+      callout: {
+        type: 'tip',
+        title: '實用記憶口訣：砍雜訊、切小塊、說人話',
+        text: '設計新教材時只要反問自己這三個問題：畫面有沒有多餘裝飾？這一頁是不是只講一件事？語氣像不像跟朋友當面解釋？',
+      },
+      speakerNotes:
+        '不需要叫大家死背 12 個英文名詞！只要讓聽眾記住這三色卡片：紅色砍雜訊、黃色切小塊、綠色搭橋樑。特別提醒第 12 點：視訊簡報角落不一定要放講者大頭框，內容清晰比臉更重要。',
+    },
+    {
+      id: 'unit-5-assertion-evidence',
+      title: '斷言＋視覺證據改造術',
+      tag: '第 5 站・實戰改造',
+      durationSec: 95,
+      assertion: '將條列投影片改寫為「結論句標題＋視覺證據」，聽眾能立即抓到重點',
+      slidePoints: [
+        '傳統簡報寫「名詞主題＋五條長句子」，聽眾必須自己猜結論',
+        '斷言標題用一句完整的「主詞＋動詞＋結論」直接告訴你答案',
+        '下方切換「改造前／改造後」分頁，親自對比設計差異',
+      ],
+      bookProse: [
+        '賓州州立大學 Michael Alley 教授提出的 [[assertion-evidence]]，被證明能顯著提升理工與教學簡報的理解率。規則非常單純卻極具威力：第一，把「第三章：分析結果」這種空泛標題，改成「近半數延遲源於需求變更，應優先設凍結點」的完整結論句。',
+        '第二，把投影片中央原本塞滿的條列段落刪除，只留下真正能「證明這句話」的圖表、圖解或結構比較，並把補充細節放進講者備忘錄（按快捷鍵 N 即可展開）。請點擊下方分頁體驗這場「手術級改造」！',
+      ],
+      widgetId: 'slide-makeover',
+      quiz: {
+        question: '下列哪一個簡報主標題最符合「斷言-視覺證據（Assertion-Evidence）」設計精神？',
+        options: [
+          {
+            text: '第二節：光合作用的過程與影響因素分析',
+            explanation: '這只是一個主題標籤，看完標題仍然不知道「影響了什麼」或「結論為何」。',
+          },
+          {
+            text: '提高光照強度能加速光合作用，但在高溫下會因氣孔關閉而停滯',
+            explanation: '完全正確！它用一句完整的因果結論句作為標題，讓底下的曲線圖成為直接支持這句話的視覺證據。',
+          },
+          {
+            text: '光合作用實驗數據表格（2026 年版）',
+            explanation: '這只是圖表的名稱描述，依然把「推論出什麼規律」的苦差事丟給聽眾自己找。',
+          },
+        ],
+        correctIndex: 1,
+      },
+      speakerNotes:
+        '示範這個互動對比台時，先停在「改造前」問觀眾：「給你 5 秒鐘，你抓得到這頁最重要的一句話嗎？」接著切到「改造後」，讓大家體會只需 1 秒就能看懂 45% 主因與結論的暢快感。',
+    },
+    {
+      id: 'unit-6-spatial-contiguity',
+      title: '圖文緊鄰與視覺訊號',
+      tag: '第 6 站・圖解美學',
+      durationSec: 70,
+      assertion: '把標籤直接放在圖解元件旁並用色彩引導視線，能立刻消除眼睛搜尋疲勞',
+      slidePoints: [
+        '分離式圖例（左圖＋右下方編號說明）強迫大腦不斷來回掃描',
+        '[[spatial-contiguity]] 要求把文字直接標註在圖形對應位置旁',
+        '運用「高對比墨藍＋低飽和灰」凸顯主角，其餘配角自動退後',
+      ],
+      bookProse: [
+        '看過那種「圖上寫著 A、B、C、D 四個小圓圈，然後圖的下方再用極小字體寫著 A 代表什麼、B 代表什麼」的教材嗎？每當眼睛從 A 跳去圖例又跳回圖形，工作記憶就會漏掉一部分畫面，這正是違反 [[spatial-contiguity]] 的經典反例。',
+        '解法很簡單：直接把名稱與簡短功用寫在圖形元件正旁邊，並用「視覺訊號」原則，將當前要強調的路徑畫成飽和墨藍或森林綠，其餘次要結構降為中性淺灰。下圖左邊與右邊的掃描負擔差距一目了然。',
+      ],
+      visual: {
+        caption: '空間分離式圖例（左）vs 空間緊鄰直接標註＋色彩訊號（右）',
+        svg: `<svg viewBox="0 0 640 190" role="img" aria-label="對比圖：左邊圖例與圖形分離導致眼神跳躍，右邊直接標註元件名稱並用高對比色標示關鍵路徑">
+          <rect x="10" y="10" width="295" height="170" rx="12" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.8" />
+          <text x="157" y="34" text-anchor="middle" font-size="12.5" font-weight="800" fill="#b91c1c">❌ 反例：標籤分離（眼睛來回跳躍）</text>
+          <rect x="44" y="54" width="52" height="38" rx="6" fill="#94a3b8" />
+          <text x="70" y="77" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff">(1)</text>
+          <line x1="98" y1="73" x2="132" y2="73" stroke="#64748b" stroke-width="2" />
+          <rect x="134" y="54" width="52" height="38" rx="6" fill="#94a3b8" />
+          <text x="160" y="77" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff">(2)</text>
+          <line x1="188" y1="73" x2="220" y2="73" stroke="#64748b" stroke-width="2" />
+          <rect x="222" y="54" width="52" height="38" rx="6" fill="#94a3b8" />
+          <text x="248" y="77" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff">(3)</text>
+          <path d="M70 94 Q115 118 85 130" stroke="#b91c1c" stroke-width="1.5" stroke-dasharray="3 3" fill="none" />
+          <rect x="24" y="122" width="268" height="44" rx="8" fill="#ffffff" stroke="#fca5a5" />
+          <text x="34" y="140" font-size="10.5" fill="#334155">圖例說明：(1) 輸入緩衝區  (2) 工作記憶處理核心</text>
+          <text x="34" y="156" font-size="10.5" fill="#334155">(3) 長期記憶結構化儲存庫（眼神得來回對照！）</text>
+
+          <rect x="335" y="10" width="295" height="170" rx="12" fill="#dcfce7" stroke="#15803d" stroke-width="1.8" />
+          <text x="482" y="34" text-anchor="middle" font-size="12.5" font-weight="800" fill="#15803d">✅ 推薦：空間緊鄰＋高對比訊號</text>
+          <rect x="352" y="58" width="76" height="58" rx="8" fill="#cbd5e1" />
+          <text x="390" y="83" text-anchor="middle" font-size="11" font-weight="800" fill="#334155">感官輸入</text>
+          <text x="390" y="101" text-anchor="middle" font-size="9.5" fill="#475569">過濾雜訊</text>
+
+          <line x1="430" y1="87" x2="444" y2="87" stroke="#1b365d" stroke-width="2.5" />
+          <rect x="446" y="52" width="88" height="70" rx="8" fill="#1b365d" />
+          <text x="490" y="80" text-anchor="middle" font-size="11.5" font-weight="800" fill="#ffffff">工作記憶</text>
+          <text x="490" y="99" text-anchor="middle" font-size="9.5" fill="#dbeafe">容量 3–5 塊</text>
+          <text x="490" y="114" text-anchor="middle" font-size="9" font-weight="700" fill="#fde68a">★ 主角高亮</text>
+
+          <line x1="536" y1="87" x2="550" y2="87" stroke="#15803d" stroke-width="2.5" />
+          <rect x="552" y="58" width="66" height="58" rx="8" fill="#15803d" />
+          <text x="585" y="83" text-anchor="middle" font-size="11" font-weight="800" fill="#ffffff">長期記憶</text>
+          <text x="585" y="101" text-anchor="middle" font-size="9.5" fill="#dcfce7">永久連結</text>
+          <text x="482" y="156" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14532d">文字直接貼合方塊，視線順著左→右一次掃完</text>
+        </svg>`,
+      },
+      speakerNotes:
+        '請聽眾比較左圖跟右圖的眼神動線：左圖要看懂 (2) 得先往下掃再往上回頭找，右圖直接順著由左到右的色彩節奏一次讀完，這就是空間緊鄰加上視覺訊號的威力。',
+    },
+    {
+      id: 'unit-7-fluid-dual-mode',
+      title: '一份教材驅動雙模與講義',
+      tag: '第 7 站・工作流架構',
+      durationSec: 70,
+      assertion: '單一結構化資料來源能同時輸出「深度閱讀網頁、簡報舞台與講義列印」',
+      slidePoints: [
+        '不必再為了同一堂課維護 Word 講義與 PPT 兩份不同檔案',
+        '按下 B 鍵切換閱讀／簡報模式，且互動模擬器的狀態不遺失',
+        '內建雙版型 @media print，支援「純教材列印」與「簡報＋講稿講義」',
+      ],
+      bookProse: [
+        '過去老師最頭痛的事，就是上課前才修改了簡報上的數據，卻忘記同步更新學生手上的講義或補充閱讀網頁。本工作坊採用「單一資料來源（Single-Source）」設計：整本教材的斷言、圖解、深讀散文、互動模擬與講稿全部寫在同一份結構化清單裡。',
+        '當你需要自學或分享給學生預習時，切換為「📖 教材閱讀模式」；走上講台時一鍵切換為「📽️ 簡報展示模式」（並開啟講者備忘錄與計時器）；課程結束要印紙本講義時，按下 P 鍵即可輸出乾淨無多餘按鈕的簡報＋筆記講義！',
+      ],
+      comparison: {
+        before: {
+          title: '傳統雙檔分頭維護',
+          points: [
+            'PPT 與 Word 講義內容經常不同步',
+            '簡報畫面塞滿文字，印出來卻沒有口語脈絡',
+            '需要網路或軟體安裝才能打開檢視',
+          ],
+        },
+        after: {
+          title: '本工作坊流體雙模架構',
+          points: [
+            '同一份結構化單元自動對應閱讀與簡報兩套排版',
+            '講稿分離存放於備忘錄，簡報乾淨、講義完整',
+            '一鍵打包為單一離線 HTML 檔，雙擊即用',
+          ],
+        },
+      },
+      speakerNotes:
+        '這裡可以當場按 P 鍵展示列印對話框，說明學生版「完整教材列印」與教師／預習版「簡報＋講者筆記講義」的差別，強調不用再維護兩份檔案的省時優勢。',
+    },
+    {
+      id: 'unit-8-capstone-checklist',
+      title: '上線前的自我檢核清單',
+      tag: '第 8 站・實作驗收',
+      durationSec: 65,
+      assertion: '發行教材前用五項品管指標與自動化檢查把關，能確保每一頁都清晰好懂',
+      slidePoints: [
+        '執行 npm run audit-books 可自動檢測斷言、字數密度與圖解比',
+        '確認每個專業詞彙都有白話定義與生活比喻',
+        '完成下方終極隨堂測試，檢驗你是否已經掌握核心設計原則',
+      ],
+      bookProse: [
+        '恭喜你走完這趟認知友善教材設計之旅！本工作坊內建了自動化教學品管工具（`pedagogyLinter.js`），會在你開發與交付前客觀檢查每一頁是否出現字數過載、漏掉詞彙定義或缺乏視覺證據。',
+        '在正式發布你的第一本雙模教材之前，請先用最後一題隨堂診斷測驗暖身，並對照下方五點交付檢查清單，確保每位讀者和聽眾都能輕鬆吸收你的知識結晶。',
+      ],
+      checklist: [
+        '每一頁的主標題都是一句「完整的結論斷言」，而非空泛章節名稱',
+        '簡報重點不超過 4 條短句，詳細講解已妥善移至 bookProse 與 speakerNotes',
+        '全書至少 60% 以上單元具備直接證明斷言的 SVG 圖解、對比卡或互動模擬器',
+        '關鍵術語已透過 [[termId]] 綁定詞彙預習卡，且標籤直接貼在圖解對應位置旁',
+        '執行 npm test、npm run audit-books 與 npm run build 全數通過 0 Errors',
+      ],
+      quiz: {
+        question: '準備發布一份新教材時，發現其中一頁簡報有 6 條超過 40 字的重點且沒有配圖，依照本工作坊規範應該如何修改？',
+        options: [
+          {
+            text: '把字體縮小成 12pt，硬塞進同一頁投影片並加上背景底紋',
+            explanation: '縮小字體加上裝飾底紋會大幅惡化易讀性並製造外在負荷，是最危險的反模式。',
+          },
+          {
+            text: '拆分成 2 個精簡單元、將長句子移入講稿與正文，並補上核心對比圖解',
+            explanation: '完全正確！結合 Segmenting（拆分單元）、Redundancy（講稿分離）與 Assertion-Evidence（斷言＋視覺證據），這正是讓複雜變簡單的標準做法！',
+          },
+          {
+            text: '在頁尾貼一張寫著「加油」的可愛插圖平衡空白',
+            explanation: '無關的裝飾插圖違反極簡去噪（Coherence）原則，無助於理解文字牆。',
+          },
+        ],
+        correctIndex: 1,
+      },
+      speakerNotes:
+        '結尾引導大家直接打開終端機執行 npm run new-book 與 npm run audit-books，體驗工具如何即時回饋分數與修正建議。鼓勵大家把手邊最常講錯或學生最難懂的單元拿來改造成第一本雙模教材！',
+    },
+  ],
+};
+
+return { BOOK_DATA };
+})();
+
+// === Module: ./src/widgets/interactiveDemos.js ===
+const __mod_interactiveDemos = (() => {
+/**
+ * Interactive Explorable Widgets for `cognitive-design-guide`.
+ * Pure evaluation helpers are exported separately for Node headless verification.
+ */
+
+function evaluateCognitiveLoadState({
+  complexity = 2,
+  removeClutter = false,
+  addSignaling = false,
+  segmentSteps = false,
+  avoidRedundantText = false,
+} = {}) {
+  const level = Math.max(1, Math.min(3, Number(complexity) || 2));
+  const intrinsicLoad = level === 1 ? 28 : level === 2 ? 48 : 65;
+
+  let extraneousLoad = 54;
+  if (removeClutter) extraneousLoad -= 16;
+  if (addSignaling) extraneousLoad -= 12;
+  if (segmentSteps) extraneousLoad -= 12;
+  if (avoidRedundantText) extraneousLoad -= 10;
+  extraneousLoad = Math.max(4, extraneousLoad);
+
+  const totalLoad = intrinsicLoad + extraneousLoad;
+  const remainingCapacity = 100 - totalLoad;
+
+  let status = 'optimal';
+  let verdict = '✅ 認知空間充足！外在干擾已被排除，學習者有餘裕吸收核心概念。';
+  if (totalLoad > 100) {
+    status = 'overload';
+    verdict = `🚨 工作記憶爆表（${totalLoad}%）！外在干擾擠爆書桌，學習者只會記得畫面很亂，忘記你在教什麼。`;
+  } else if (totalLoad >= 82) {
+    status = 'tight';
+    verdict = `⚠️ 接近警戒線（${totalLoad}%）！雖未溢出但幾乎沒有餘裕思考，建議再開啟 1–2 項減負策略。`;
+  }
+
+  return {
+    complexity: level,
+    intrinsicLoad,
+    extraneousLoad,
+    totalLoad,
+    remainingCapacity,
+    status,
+    verdict,
+  };
+}
+
+const SLIDE_MAKEOVER_DATA = {
+  before: {
+    headline: '第三章：影響軟體專案延遲的各項常見成因分析與回顧',
+    bullets: [
+      '根據過去年度統計顯示，需求頻繁變更是造成時程延宕的最主要因素之一，佔所有專案問題的 45%。',
+      '其次是跨部門溝通不良與文件交接不清，約佔整體延遲因素的 30%，經常導致重工。',
+      '第三則是測試自動化覆蓋率不足與環境配置差異，佔 25%，容易在最後一刻才發現系統缺陷。',
+      '此外缺乏階段性檢核點與明確定義，也會讓團隊在執行中期迷失方向。',
+    ],
+    annotations: [
+      '違反「斷言原則」：標題只寫章節名稱，聽眾看完仍不知道結論是什麼。',
+      '違反「去冗餘原則」：把整段講稿直接貼上投影片，觀眾讀字就忙不過來，根本聽不進講者說話。',
+      '缺少「視覺證據」：45% / 30% / 25% 是明確數據，卻用純文字描述，眼睛無法立刻看出主從比例。',
+    ],
+  },
+  after: {
+    headline: '近半數專案延遲（45%）源於需求變更，應優先鎖定需求凍結點',
+    bars: [
+      { label: '需求頻繁變更', pct: 45, highlight: true },
+      { label: '跨部門交接不清', pct: 30, highlight: false },
+      { label: '測試與環境差異', pct: 25, highlight: false },
+    ],
+    takeaways: [
+      '前兩大風險合計佔延遲總因的 75%',
+      '解法：上線前 2 週設立需求凍結與詞彙對齊檢核',
+    ],
+    annotations: [
+      '符合「斷言標題」：主標題直接說出 45% 主因與行動結論。',
+      '符合「空間緊鄰與訊號」：用橫條圖直接把比例排出來，並把最高項以深墨藍高亮標記。',
+      '符合「去冗餘原則」：詳盡背景案例交給講者口述與教材正文，畫面只留核心圖表與 2 句重點。',
+    ],
+  },
+};
+
+function renderCognitiveLoadSimulator(container, ctx) {
+  const defaults = {
+    complexity: 2,
+    removeClutter: false,
+    addSignaling: false,
+    segmentSteps: false,
+    avoidRedundantText: false,
+  };
+
+  let current = { ...defaults, ...(ctx.getState ? ctx.getState() : ctx.state) };
+
+  const renderDom = () => {
+    const res = evaluateCognitiveLoadState(current);
+    const barMax = 130;
+    const intrinsicW = Math.round((res.intrinsicLoad / barMax) * 320);
+    const extraneousW = Math.round((res.extraneousLoad / barMax) * 320);
+    const limitX = Math.round((100 / barMax) * 320);
+
+    const complexityName =
+      res.complexity === 1 ? '基礎概念' : res.complexity === 2 ? '中等關聯' : '高難度多步驟';
+
+    container.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;">
+        <strong>🎛️ 互動實驗室：工作記憶負荷模擬器（狀態跨模式保留）</strong>
+        <span style="font-size:0.84rem;font-weight:800;color:var(--ink-secondary);">
+          總負荷：${res.totalLoad}% / 上限 100%
+        </span>
+      </div>
+
+      <div class="sim-slider-row" style="margin-top:0.65rem;">
+        <label for="sim-complexity-range" style="font-weight:700;font-size:0.88rem;">
+          📚 主題本質難度（Intrinsic Load）：<span style="color:var(--accent-primary);">${complexityName} (${res.intrinsicLoad}%)</span>
+        </label>
+        <input id="sim-complexity-range" type="range" min="1" max="3" step="1" value="${res.complexity}" style="width:160px;" />
+      </div>
+
+      <div class="sim-controls-grid" role="group" aria-label="減少外在負荷的設計開關">
+        <button type="button" class="sim-toggle-btn" data-sim-key="removeClutter" aria-pressed="${current.removeClutter}">
+          ${current.removeClutter ? '✅' : '⬜'} 移除無關裝飾與背景（-16%）
+        </button>
+        <button type="button" class="sim-toggle-btn" data-sim-key="addSignaling" aria-pressed="${current.addSignaling}">
+          ${current.addSignaling ? '✅' : '⬜'} 用色彩訊號標出重點（-12%）
+        </button>
+        <button type="button" class="sim-toggle-btn" data-sim-key="segmentSteps" aria-pressed="${current.segmentSteps}">
+          ${current.segmentSteps ? '✅' : '⬜'} 拆分成短單元分段學（-12%）
+        </button>
+        <button type="button" class="sim-toggle-btn" data-sim-key="avoidRedundantText" aria-pressed="${current.avoidRedundantText}">
+          ${current.avoidRedundantText ? '✅' : '⬜'} 講稿移出畫面不重複（-10%）
+        </button>
+      </div>
+
+      <svg viewBox="0 0 360 76" role="img" aria-label="工作記憶負荷量表：本質負荷 ${res.intrinsicLoad}% 加 外在負荷 ${res.extraneousLoad}% 等於 ${res.totalLoad}%">
+        <rect x="16" y="20" width="320" height="28" rx="6" fill="#e2e8f0" />
+        <rect x="16" y="20" width="${intrinsicW}" height="28" rx="4" fill="#1b365d" />
+        <rect x="${16 + intrinsicW}" y="20" width="${extraneousW}" height="28" rx="4" fill="${res.status === 'overload' ? '#b91c1c' : '#d97706'}" />
+        <line x1="${16 + limitX}" y1="10" x2="${16 + limitX}" y2="58" stroke="#15803d" stroke-width="2.5" stroke-dasharray="4 3" />
+        <text x="${16 + limitX}" y="9" text-anchor="middle" font-size="9.5" font-weight="800" fill="#15803d">100% 工作記憶上限</text>
+        <text x="16" y="68" font-size="10" font-weight="700" fill="#1b365d">■ 本質負荷 ${res.intrinsicLoad}%</text>
+        <text x="128" y="68" font-size="10" font-weight="700" fill="${res.status === 'overload' ? '#b91c1c' : '#b45309'}">■ 外在雜訊 ${res.extraneousLoad}%</text>
+        <text x="242" y="68" font-size="10" font-weight="700" fill="#15803d">剩餘空間 ${Math.max(0, res.remainingCapacity)}%</text>
+      </svg>
+
+      <div class="sim-verdict is-${res.status}" role="status">${res.verdict}</div>
+    `;
+  };
+
+  container.addEventListener('input', (event) => {
+    if (event.target.id === 'sim-complexity-range') {
+      current = { ...current, complexity: Number(event.target.value) };
+      ctx.setState(current);
+      renderDom();
+    }
+  });
+
+  container.addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-sim-key]');
+    if (!btn) return;
+    const key = btn.getAttribute('data-sim-key');
+    current = { ...current, [key]: !current[key] };
+    ctx.setState(current);
+    renderDom();
+    ctx.announce?.('已更新工作記憶負荷模擬結果');
+  });
+
+  renderDom();
+}
+
+function renderSlideMakeover(container, ctx) {
+  const defaults = { view: 'before', showAnnotations: true };
+  let current = { ...defaults, ...(ctx.getState ? ctx.getState() : ctx.state) };
+
+  const renderDom = () => {
+    const isAfter = current.view === 'after';
+    const data = isAfter ? SLIDE_MAKEOVER_DATA.after : SLIDE_MAKEOVER_DATA.before;
+
+    container.innerHTML = `
+      <div class="makeover-tabs">
+        <button type="button" class="pill-btn" data-makeover-tab="before" aria-pressed="${!isAfter}">❌ 改造前：條列文字牆</button>
+        <button type="button" class="pill-btn" data-makeover-tab="after" aria-pressed="${isAfter}">✅ 改造後：斷言＋視覺證據</button>
+        <button type="button" class="tool-btn" data-makeover-notes="toggle" aria-pressed="${current.showAnnotations}" style="margin-left:auto;">
+          🔍 ${current.showAnnotations ? '隱藏批註' : '顯示設計批註'}
+        </button>
+      </div>
+
+      <div class="makeover-preview ${isAfter ? 'is-good' : 'is-bad'}">
+        <div style="font-size:0.78rem;font-weight:800;color:var(--ink-secondary);margin-bottom:0.25rem;">
+          ${isAfter ? 'ASSERTION-EVIDENCE SLIDE PREVIEW' : 'TRADITIONAL BULLET SLIDE PREVIEW'}
+        </div>
+        <h4 style="font-size:1.05rem;margin-bottom:0.65rem;">${data.headline}</h4>
+        ${
+          isAfter
+            ? `
+              <svg viewBox="0 0 360 110" role="img" aria-label="專案延遲原因長條圖：需求變更 45%、交接不清 30%、測試環境 25%">
+                ${data.bars
+                  .map((b, idx) => {
+                    const y = 12 + idx * 32;
+                    const barW = Math.round((b.pct / 50) * 180);
+                    return `
+                      <text x="8" y="${y + 15}" font-size="11" font-weight="700" fill="#1e293b">${b.label}</text>
+                      <rect x="115" y="${y}" width="${barW}" height="20" rx="5" fill="${b.highlight ? '#1b365d' : '#94a3b8'}" />
+                      <text x="${122 + barW}" y="${y + 15}" font-size="11" font-weight="800" fill="${b.highlight ? '#1b365d' : '#475569'}">${b.pct}%</text>
+                    `;
+                  })
+                  .join('')}
+              </svg>
+              <ul style="margin:0.45rem 0 0;padding-left:1.2rem;font-size:0.88rem;font-weight:700;">
+                ${data.takeaways.map((t) => `<li>${t}</li>`).join('')}
+              </ul>
+            `
+            : `
+              <ul style="margin:0;padding-left:1.2rem;font-size:0.84rem;line-height:1.55;color:var(--ink-secondary);">
+                ${data.bullets.map((b) => `<li style="margin-bottom:0.35rem;">${b}</li>`).join('')}
+              </ul>
+            `
+        }
+      </div>
+
+      ${
+        current.showAnnotations
+          ? `<div class="makeover-annotation-list">
+               <strong>🧠 認知設計專家批註：</strong>
+               <ul style="margin:0.3rem 0 0;padding-left:1.15rem;">
+                 ${data.annotations.map((a) => `<li>${a}</li>`).join('')}
+               </ul>
+             </div>`
+          : ''
+      }
+    `;
+  };
+
+  container.addEventListener('click', (event) => {
+    const tabBtn = event.target.closest('[data-makeover-tab]');
+    if (tabBtn) {
+      current = { ...current, view: tabBtn.getAttribute('data-makeover-tab') };
+      ctx.setState(current);
+      renderDom();
+      return;
+    }
+    if (event.target.closest('[data-makeover-notes]')) {
+      current = { ...current, showAnnotations: !current.showAnnotations };
+      ctx.setState(current);
+      renderDom();
+    }
+  });
+
+  renderDom();
+}
+
+const WIDGET_REGISTRY = {
+  'cognitive-load-sim': renderCognitiveLoadSimulator,
+  'slide-makeover': renderSlideMakeover,
+};
+
+return { evaluateCognitiveLoadState, SLIDE_MAKEOVER_DATA, WIDGET_REGISTRY };
+})();
+
+// === Module: ./src/main.js ===
+(() => {
+const { BOOK_DATA } = __mod_content;
+const { WIDGET_REGISTRY } = __mod_interactiveDemos;
+const { mountBookViewer } = __mod_bookViewer;
+
+function init() {
+  mountBookViewer({
+    book: BOOK_DATA,
+    widgets: WIDGET_REGISTRY,
+    rootSelector: '#book-app',
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

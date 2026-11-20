@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="paper">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>易懂教學教材與展示簡報工作坊｜Teaching Book &amp; Presentation Studio</title>
+  <style>
+/* === Style: ./shared/styles/tokens.css === */
+:root,
+[data-theme="paper"] {
+  --bg-canvas: #faf6ee;
+  --bg-card: #fffdf9;
+  --bg-subtle: #f2ebe0;
+  --bg-elevated: #ffffff;
+  --ink-primary: #1b2a41;
+  --ink-secondary: #4a5b70;
+  --border-soft: #d6cbb8;
+  --border-strong: #9c8f7a;
+
+  --accent-primary: #1b365d;
+  --accent-bg: #e3eaf5;
+  --accent-ink: #ffffff;
+
+  --highlight-color: #b45309;
+  --highlight-bg: #fef3c7;
+
+  --ok-color: #15803d;
+  --ok-bg: #dcfce7;
+  --err-color: #b91c1c;
+  --err-bg: #fee2e2;
+
+  --focus-ring: #1b365d;
+  --shadow-card: 0 4px 16px rgb(27 42 65 / 0.07);
+  --shadow-stage: 0 12px 32px rgb(27 42 65 / 0.1);
+
+  color-scheme: light;
+}
+
+[data-theme="light"] {
+  --bg-canvas: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-subtle: #f1f5f9;
+  --bg-elevated: #ffffff;
+  --ink-primary: #0f172a;
+  --ink-secondary: #475569;
+  --border-soft: #cbd5e1;
+  --border-strong: #64748b;
+
+  --accent-primary: #1d4ed8;
+  --accent-bg: #dbeafe;
+  --accent-ink: #ffffff;
+
+  --highlight-color: #b45309;
+  --highlight-bg: #fef3c7;
+
+  --ok-color: #15803d;
+  --ok-bg: #dcfce7;
+  --err-color: #b91c1c;
+  --err-bg: #fee2e2;
+
+  --focus-ring: #0f172a;
+  --shadow-card: 0 4px 14px rgb(15 23 42 / 0.06);
+  --shadow-stage: 0 12px 32px rgb(15 23 42 / 0.09);
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg-canvas: #0f172a;
+  --bg-card: #1e293b;
+  --bg-subtle: #273449;
+  --bg-elevated: #273449;
+  --ink-primary: #f1f5f9;
+  --ink-secondary: #cbd5e1;
+  --border-soft: #334155;
+  --border-strong: #64748b;
+
+  --accent-primary: #38bdf8;
+  --accent-bg: #0c4a6e;
+  --accent-ink: #082f49;
+
+  --highlight-color: #fbbf24;
+  --highlight-bg: #451a03;
+
+  --ok-color: #4ade80;
+  --ok-bg: #14532d;
+  --err-color: #fca5a5;
+  --err-bg: #7f1d1d;
+
+  --focus-ring: #7dd3fc;
+  --shadow-card: 0 4px 18px rgb(0 0 0 / 0.35);
+  --shadow-stage: 0 14px 36px rgb(0 0 0 / 0.45);
+
+  color-scheme: dark;
+}
+
+:root {
+  --target-size: 28px;
+  --radius-lg: 16px;
+  --radius-md: 11px;
+  --font-sans: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, -apple-system, sans-serif;
+  --font-display: 'Noto Serif TC', 'PMingLiU', 'Noto Sans TC', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+  --reader-font-scale: 1;
+}
+
+@media (pointer: coarse) {
+  :root {
+    --target-size: 44px;
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+}
+
+body {
+  margin: 0;
+  min-block-size: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow-wrap: break-word;
+  line-height: 1.65;
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+}
+
+h1, h2, h3, h4 {
+  text-wrap: balance;
+  margin-top: 0;
+}
+
+p, li {
+  text-wrap: pretty;
+}
+
+:where(a, code) {
+  overflow-wrap: anywhere;
+}
+
+img, svg {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+/* Component-specific dark code surface with explicit background & color */
+pre,
+code.code-block {
+  color-scheme: dark;
+  background: #0f172a;
+  color: #e2e8f0;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  overflow-x: auto;
+}
+
+code {
+  font-family: var(--font-mono);
+}
+
+/* Visually hidden utility (accessible to screen readers; reveals on focus) */
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1000;
+  background: var(--accent-primary);
+  color: var(--accent-ink);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* Minimum touch/click target sizing & natural interaction feedback */
+:where(button, select, textarea, input:not([type="checkbox"], [type="radio"]), [role="button"], nav a, .back-hub-link, label:has(input[type="checkbox"], input[type="radio"])) {
+  min-block-size: var(--target-size);
+  min-inline-size: var(--target-size);
+}
+
+:where(button) {
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :where(button, .pill-btn, .tool-btn, .play-link) {
+    transition: box-shadow 150ms ease-out, scale 150ms ease-out, background-color 150ms ease-out, border-color 150ms ease-out;
+  }
+}
+
+@media (hover: hover) {
+  button:hover:not(:disabled, [aria-disabled="true"]) {
+    box-shadow: 0 3px 10px rgb(15 23 42 / 0.16);
+  }
+}
+
+button:active:not(:disabled, [aria-disabled="true"]) {
+  scale: 0.97;
+}
+
+button:disabled,
+button[aria-disabled="true"] {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* Shared Header, Main & Footer */
+.app-header {
+  background: var(--bg-card);
+  border-bottom: 2px solid var(--border-soft);
+  padding: 0.75rem max(1rem, env(safe-area-inset-right, 0px)) 0.75rem max(1rem, env(safe-area-inset-left, 0px));
+  padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.brand-cluster {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.brand-icon {
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.brand-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.02rem, 1.55vw, 1.28rem);
+  font-weight: 800;
+  margin: 0;
+  color: var(--ink-primary);
+}
+
+.brand-subtitle {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--ink-secondary);
+}
+
+.nav-pill, .tool-btn, .pill-btn {
+  background: var(--bg-subtle);
+  color: var(--ink-primary);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 0.38rem 0.85rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.32rem;
+  white-space: nowrap;
+}
+
+.nav-pill.is-active,
+.pill-btn.is-active,
+.tool-btn[aria-pressed="true"],
+.pill-btn[aria-pressed="true"] {
+  background: var(--accent-primary);
+  color: var(--accent-ink);
+  border-color: var(--accent-primary);
+  box-shadow: inset 0 0 0 1px var(--accent-ink);
+}
+
+.app-main {
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding: 1rem max(1rem, env(safe-area-inset-right, 0px)) 2rem max(1rem, env(safe-area-inset-left, 0px));
+}
+
+.app-footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ink-secondary);
+  padding: 0.9rem 1rem max(0.9rem, env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--border-soft);
+  background: var(--bg-card);
+}
+
+/* Native <dialog> styling & Top-Layer Animations */
+dialog.lab-dialog {
+  width: min(92vw, 860px);
+  max-height: 86dvh;
+  border: 2px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  background: var(--bg-card);
+  color: var(--ink-primary);
+  box-shadow: 0 24px 48px rgb(15 23 42 / 0.28);
+  opacity: 0;
+  transition-property: opacity, transform, display, overlay;
+  transition-duration: 0.25s;
+  transition-timing-function: ease-out;
+  transition-behavior: allow-discrete;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.lab-dialog {
+    transform: scale(0.94);
+  }
+}
+
+dialog.lab-dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog.lab-dialog::backdrop {
+  background-color: rgba(15, 23, 42, 0);
+  overflow: hidden;
+  overscroll-behavior: contain;
+  transition-property: background-color, display, overlay;
+  transition-duration: 0.25s;
+  transition-timing-function: ease-out;
+  transition-behavior: allow-discrete;
+}
+
+:is(dialog.lab-dialog[open]):where(:not([data-closing])) {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+}
+
+@starting-style {
+  :is(dialog.lab-dialog[open]):where(:not([data-closing])) {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :is(dialog.lab-dialog[open]):where(:not([data-closing])) {
+    transform: scale(1);
+  }
+  @starting-style {
+    :is(dialog.lab-dialog[open]):where(:not([data-closing])) {
+      transform: scale(0.94);
+    }
+  }
+}
+
+:is(dialog.lab-dialog[open]):where(:not([data-closing]))::backdrop {
+  background-color: rgba(15, 23, 42, 0.52);
+}
+
+@starting-style {
+  :is(dialog.lab-dialog[open]):where(:not([data-closing]))::backdrop {
+    background-color: rgba(15, 23, 42, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  dialog.lab-dialog,
+  dialog.lab-dialog::backdrop {
+    transition-duration: 0.1s;
+  }
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1.5px solid var(--border-soft);
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+}
+
+.dialog-close-btn {
+  background: var(--bg-subtle);
+  color: var(--ink-primary);
+  border: 1.5px solid var(--border-soft);
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-weight: 800;
+}
+
+.dialog-body {
+  padding: 1rem 1.25rem;
+  overflow-y: auto;
+}
+
+/* Directional View Transitions for Slide Navigation */
+@keyframes slide-to-left {
+  to { transform: translateX(-100%); }
+}
+
+@keyframes slide-from-right {
+  from { transform: translateX(100%); }
+}
+
+@keyframes slide-to-right {
+  to { transform: translateX(100%); }
+}
+
+@keyframes slide-from-left {
+  from { transform: translateX(-100%); }
+}
+
+::view-transition-group(root) {
+  animation: 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html:active-view-transition-type(forward)::view-transition-old(root) {
+  animation-name: slide-to-left;
+}
+
+html:active-view-transition-type(forward)::view-transition-new(root) {
+  animation-name: slide-from-right;
+}
+
+html:active-view-transition-type(backward)::view-transition-old(root) {
+  animation-name: slide-to-right;
+}
+
+html:active-view-transition-type(backward)::view-transition-new(root) {
+  animation-name: slide-from-left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root) {
+    animation: none !important;
+  }
+}
+
+
+/* === Style: ./shared/styles/hub.css === */
+.hub-hero {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--accent-bg) 100%);
+  border: 2px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem 1.6rem;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.hub-hero-text h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.18rem, 2.1vw, 1.5rem);
+  margin-bottom: 0.4rem;
+}
+
+.hub-hero-text p {
+  margin: 0;
+  color: var(--ink-secondary);
+  max-width: 68ch;
+}
+
+.hub-stats-pill {
+  background: var(--highlight-bg);
+  border: 1.5px solid var(--highlight-color);
+  color: var(--highlight-color);
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  font-weight: 800;
+  font-size: 0.92rem;
+}
+
+.hub-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  margin-bottom: 1.15rem;
+}
+
+.hub-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.hub-search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1 1 240px;
+  max-width: 360px;
+}
+
+.hub-search-input {
+  width: 100%;
+  padding: 0.5rem 0.9rem;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 999px;
+  font-size: 0.94rem;
+  font-family: inherit;
+  background: var(--bg-card);
+  color: var(--ink-primary);
+}
+
+.hub-grid-container {
+  container: hubgrid / inline-size;
+}
+
+.hub-books-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.1rem;
+}
+
+@container hubgrid (inline-size > 40rem) {
+  .hub-books-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@container hubgrid (inline-size > 66rem) {
+  .hub-books-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.hub-book-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border-soft);
+  border-top: 6px solid var(--card-accent, var(--accent-primary));
+  border-radius: var(--radius-lg);
+  padding: 1.2rem 1.3rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.hub-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.hub-card-icon {
+  font-size: 2.15rem;
+  line-height: 1;
+}
+
+.hub-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: flex-end;
+}
+
+.hub-cat-badge {
+  background: var(--accent-bg);
+  color: var(--accent-primary);
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 0.18rem 0.58rem;
+  border-radius: 999px;
+}
+
+.hub-audience-badge {
+  background: var(--bg-subtle);
+  color: var(--ink-secondary);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.18rem 0.58rem;
+  border-radius: 999px;
+}
+
+.hub-card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.hub-card-subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+.hub-card-desc {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ink-secondary);
+  flex: 1 0 auto;
+}
+
+.hub-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  font-size: 0.8rem;
+  color: var(--ink-secondary);
+  font-weight: 700;
+}
+
+.hub-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.hub-tag {
+  font-size: 0.75rem;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-soft);
+  color: var(--ink-secondary);
+  border-radius: 6px;
+  padding: 0.14rem 0.45rem;
+}
+
+.hub-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+
+.hub-progress-track {
+  flex: 1;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--bg-subtle);
+  overflow: hidden;
+}
+
+.hub-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent-primary);
+}
+
+.hub-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--border-soft);
+}
+
+.action-link {
+  flex: 1 1 130px;
+  text-decoration: none;
+  border-radius: 10px;
+  padding: 0.52rem 0.85rem;
+  font-size: 0.88rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.action-link--book {
+  background: var(--accent-primary);
+  color: var(--accent-ink);
+}
+
+.action-link--slide {
+  background: var(--bg-subtle);
+  color: var(--ink-primary);
+  border: 1.5px solid var(--border-soft);
+}
+
+@media (hover: hover) {
+  .action-link:hover {
+    box-shadow: 0 3px 10px rgb(15 23 42 / 0.2);
+  }
+}
+
+.action-link:active {
+  scale: 0.97;
+}
+
+.hub-empty-state {
+  background: var(--bg-card);
+  border: 2px dashed var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--ink-secondary);
+  font-weight: 700;
+}
+
+.hub-author-tip {
+  margin-top: 1.5rem;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 0.95rem 1.2rem;
+  font-size: 0.88rem;
+  color: var(--ink-secondary);
+}
+
+.hub-author-tip code {
+  background: var(--bg-subtle);
+  padding: 0.14rem 0.4rem;
+  border-radius: 6px;
+  color: var(--ink-primary);
+  font-weight: 700;
+}
+
+</style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link visually-hidden">跳至教材列表</a>
+
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-cluster">
+        <span class="brand-icon" aria-hidden="true">📘</span>
+        <div>
+          <h1 class="brand-title">易懂教學教材與展示簡報工作坊</h1>
+          <p class="brand-subtitle">Teaching Book &amp; Presentation Studio・流體雙模互動教材・零伺服器離線運行</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" tabindex="-1" class="app-main">
+    <div id="hub-root"></div>
+  </main>
+
+  <footer class="app-footer">
+    <p>易懂教學教材與展示簡報工作坊・純前端原生 HTML / CSS / ES Modules・支援離線單檔雙擊閱讀與簡報</p>
+  </footer>
+
+  <div id="sr-announcer" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+'use strict';
+// === Module: ./shared/catalog.js ===
+const __mod_catalog = (() => {
+/**
+ * Central Teaching Books & Presentations Catalog.
+ * Add a new entry here whenever adding a book under `books/<id>/`
+ * (or run `npm run new-book -- <slug> "<title>" [category] [audience]`).
+ */
+const BOOK_CATALOG = [
+  {
+    id: 'cognitive-design-guide',
+    title: '讓複雜變簡單：易懂教學教材與簡報設計指南',
+    subtitle: '認知負荷理論 × Mayer 12 原則 × 斷言-視覺證據實戰工作坊',
+    category: '教學設計・簡報表達',
+    audience: '教師・講師・教材製作人',
+    level: '實戰入門',
+    icon: '📖',
+    accent: '#1b365d',
+    tags: ['認知負荷', 'Mayer 12原則', '斷言-視覺證據', '雙模簡報'],
+    description:
+      '從零拆解「為什麼聽眾看簡報總是記不住？」透過 8 個循序單元、詞彙預習卡片、認知負荷模擬器與簡報前後改造對比台，帶你做出好讀又好講的雙模教材與展示簡報。',
+    entry: './books/cognitive-design-guide/index.html',
+    storageKey: 'book_cognitive-design-guide_progress_v1',
+    unitCount: 8,
+    estimatedMinutes: 8,
+  },
+];
+
+return { BOOK_CATALOG };
+})();
+
+// === Module: ./shared/hub.js ===
+(() => {
+const { BOOK_CATALOG } = __mod_catalog;
+
+function escapeHtml(str) {
+  return String(str ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function readBookProgress(storageKey, unitCount) {
+  if (!storageKey || !unitCount) return { completed: 0, pct: 0 };
+  try {
+    const raw = window.localStorage.getItem(storageKey);
+    if (!raw) return { completed: 0, pct: 0 };
+    const parsed = JSON.parse(raw);
+    const completed = Array.isArray(parsed?.completedUnitIds)
+      ? parsed.completedUnitIds.length
+      : 0;
+    const pct = Math.min(100, Math.round((completed / unitCount) * 100));
+    return { completed, pct };
+  } catch {
+    return { completed: 0, pct: 0 };
+  }
+}
+
+function initHub() {
+  const root = document.getElementById('hub-root');
+  const announcer = document.getElementById('sr-announcer');
+  if (!root) return;
+
+  const state = {
+    category: '全部',
+    query: '',
+  };
+
+  const categories = ['全部', ...Array.from(new Set(BOOK_CATALOG.map((b) => b.category)))];
+
+  const announce = (msg) => {
+    if (!announcer) return;
+    announcer.textContent = '';
+    requestAnimationFrame(() => {
+      announcer.textContent = msg;
+    });
+  };
+
+  function getFilteredBooks() {
+    const q = state.query.trim().toLowerCase();
+    return BOOK_CATALOG.filter((book) => {
+      if (state.category !== '全部' && book.category !== state.category) return false;
+      if (!q) return true;
+      const haystack = [
+        book.title,
+        book.subtitle,
+        book.category,
+        book.audience,
+        book.level,
+        book.description,
+        ...(book.tags || []),
+      ]
+        .join(' ')
+        .toLowerCase();
+      return haystack.includes(q);
+    });
+  }
+
+  function renderCardsOnly() {
+    const gridHost = document.getElementById('hub-cards-host');
+    if (!gridHost) return;
+    const items = getFilteredBooks();
+    if (items.length === 0) {
+      gridHost.innerHTML = `<div class="hub-empty-state">找不到符合「${escapeHtml(state.query)}」的教學教材，請嘗試其他關鍵字或切換領域分類。</div>`;
+      return;
+    }
+
+    gridHost.innerHTML = `
+      <div class="hub-books-grid">
+        ${items
+          .map((book) => {
+            const prog = readBookProgress(book.storageKey, book.unitCount || 0);
+            const bookUrl = `${escapeHtml(book.entry)}?mode=book`;
+            const slideUrl = `${escapeHtml(book.entry)}?mode=slide`;
+            return `
+              <article class="hub-book-card" style="--card-accent: ${escapeHtml(book.accent || '#1b365d')}">
+                <div class="hub-card-top">
+                  <span class="hub-card-icon" aria-hidden="true">${book.icon || '📖'}</span>
+                  <div class="hub-card-badges">
+                    <span class="hub-cat-badge">${escapeHtml(book.category)}</span>
+                    <span class="hub-audience-badge">${escapeHtml(book.audience)}</span>
+                  </div>
+                </div>
+                <h3 class="hub-card-title">${escapeHtml(book.title)}</h3>
+                ${book.subtitle ? `<p class="hub-card-subtitle">${escapeHtml(book.subtitle)}</p>` : ''}
+                <p class="hub-card-desc">${escapeHtml(book.description)}</p>
+                <div class="hub-card-meta">
+                  <span>📑 ${book.unitCount || 0} 個單元</span>
+                  <span>⏱️ 約 ${book.estimatedMinutes || 5} 分鐘</span>
+                  <span>🎯 ${escapeHtml(book.level || '入門')}</span>
+                </div>
+                <div class="hub-card-tags">
+                  ${(book.tags || []).map((t) => `<span class="hub-tag">#${escapeHtml(t)}</span>`).join('')}
+                </div>
+                <div class="hub-progress-row" aria-label="學習進度">
+                  <span>學習進度 ${prog.pct}%</span>
+                  <div class="hub-progress-track">
+                    <div class="hub-progress-fill" style="width:${prog.pct}%"></div>
+                  </div>
+                </div>
+                <div class="hub-card-footer">
+                  <a class="action-link action-link--book" href="${bookUrl}">📖 閱讀教材</a>
+                  <a class="action-link action-link--slide" href="${slideUrl}">📽️ 簡報展示</a>
+                </div>
+              </article>
+            `;
+          })
+          .join('')}
+      </div>
+    `;
+  }
+
+  function renderFull() {
+    const totalUnits = BOOK_CATALOG.reduce((sum, b) => sum + (b.unitCount || 0), 0);
+    const totalCompleted = BOOK_CATALOG.reduce(
+      (sum, b) => sum + readBookProgress(b.storageKey, b.unitCount || 0).completed,
+      0
+    );
+
+    root.innerHTML = `
+      <section class="hub-hero" aria-labelledby="hub-welcome-title">
+        <div class="hub-hero-text">
+          <h2 id="hub-welcome-title">📚 一份教材來源，同時享受「深度閱讀」與「專業簡報」</h2>
+          <p>每本教材遵循認知負荷理論、Mayer 多媒體原則與斷言-視覺證據結構設計；免安裝伺服器，支援主題切換、講者備忘錄與雙版型講義列印。</p>
+        </div>
+        <div class="hub-stats-pill">
+          📖 已收錄 ${BOOK_CATALOG.length} 本教材 ｜ 📑 共 ${totalUnits} 單元（已讀 ${totalCompleted}）
+        </div>
+      </section>
+
+      <div class="hub-toolbar">
+        <div class="hub-filters" role="group" aria-label="依領域篩選教材">
+          ${categories
+            .map(
+              (cat) => `
+            <button type="button"
+              class="pill-btn ${state.category === cat ? 'is-active' : ''}"
+              data-hub-category="${escapeHtml(cat)}"
+              aria-pressed="${state.category === cat}">
+              ${escapeHtml(cat)}
+            </button>
+          `
+            )
+            .join('')}
+        </div>
+
+        <div class="hub-search-box">
+          <label class="visually-hidden" for="hub-search">搜尋教學教材或簡報</label>
+          <input id="hub-search" type="search" class="hub-search-input" placeholder="🔍 搜尋書名、概念、對象或標籤…" value="${escapeHtml(state.query)}" />
+        </div>
+      </div>
+
+      <div id="hub-cards-host" class="hub-grid-container"></div>
+
+      <aside class="hub-author-tip" aria-label="新增教學教材開發說明">
+        <strong>🛠️ 新增一本教學教材與簡報：</strong> 在專案根目錄執行 <code>npm run new-book -- &lt;slug&gt; "教材名稱" "分類" "目標對象"</code>，即可自動建立合規骨架並進行 <code>npm run audit-books</code> 教學品管稽核！
+      </aside>
+    `;
+
+    renderCardsOnly();
+  }
+
+  root.addEventListener('click', (e) => {
+    const catBtn = e.target.closest('[data-hub-category]');
+    if (!catBtn) return;
+    state.category = catBtn.getAttribute('data-hub-category');
+    renderFull();
+    announce(`已篩選分類：${state.category}，共 ${getFilteredBooks().length} 本教材`);
+  });
+
+  root.addEventListener('input', (e) => {
+    if (e.target.id === 'hub-search') {
+      state.query = e.target.value;
+      renderCardsOnly();
+    }
+  });
+
+  renderFull();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initHub);
+} else {
+  initHub();
+}
+
+})();
+</script>
+</body>
+</html>
